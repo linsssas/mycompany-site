@@ -107,8 +107,18 @@ h1, h2, h3 { margin: 0 0 12px; font-weight: 700; }
   font-weight: 800;
   letter-spacing: 1px;
   color: var(--text);
+  text-shadow:
+    1px 1px 0 #2a63d6,
+    2px 2px 0 #1f4ba3,
+    3px 3px 5px rgba(0, 0, 0, 0.5);
 }
-.logo span { color: var(--blue-light); }
+.logo span {
+  color: var(--blue-light);
+  text-shadow:
+    1px 1px 0 #0e2857,
+    2px 2px 0 #0a1f45,
+    3px 3px 5px rgba(0, 0, 0, 0.5);
+}
 
 .nav {
   display: flex;
