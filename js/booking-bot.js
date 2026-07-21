@@ -327,6 +327,7 @@
       createdAt: new Date().toISOString(),
     };
     NB_Storage.add(booking);
+    notifyTelegram(booking);
 
     const master = nbMasterById(ctx.masterId);
     addBot(
@@ -337,6 +338,25 @@
       { label: '📅 Записаться ещё раз', action: () => chooseServiceStep() },
       restartOption(),
     ]);
+  }
+
+  function notifyTelegram(booking) {
+    if (!NB_NOTIFY_URL) return;
+    const master = nbMasterById(booking.masterId);
+    const service = nbServiceById(booking.serviceId);
+    fetch(NB_NOTIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        masterName: master.name,
+        serviceName: service.name,
+        price: service.price,
+        date: booking.date,
+        time: booking.time,
+        name: booking.name,
+        phone: booking.phone,
+      }),
+    }).catch(() => {});
   }
 
   // ---------- Мои записи ----------

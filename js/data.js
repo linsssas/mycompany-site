@@ -51,6 +51,11 @@ const NB_SERVICES = [
 
 const NB_TIME_SLOTS = ['10:00', '11:30', '13:00', '14:30', '16:00', '17:30', '19:00', '20:00'];
 
+// URL воркера, который шлёт уведомления о записях в Telegram (см. server/telegram-notify).
+// Пусто = уведомления отключены. Заполнить после деплоя воркера, например:
+// 'https://nailblaack-notify.<subdomain>.workers.dev'
+const NB_NOTIFY_URL = '';
+
 const NB_STORAGE_KEY = 'nailblaack_bookings_v1';
 
 const NB_Storage = {

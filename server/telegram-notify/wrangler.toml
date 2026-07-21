@@ -1,0 +1,14 @@
+name = "nailblaack-notify"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Non-secret config. Set to your GitHub Pages origin once known, e.g.
+# "https://linsssas.github.io", to restrict which sites can call this worker.
+[vars]
+ALLOWED_ORIGIN = "*"
+
+# Secrets are NOT set here. After installing wrangler and running
+# `wrangler login`, set them with:
+#   wrangler secret put BOT_TOKEN
+#   wrangler secret put CHAT_ID
+# Then deploy with: wrangler deploy
