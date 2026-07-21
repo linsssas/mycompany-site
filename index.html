@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAILBLAACK — маникюрный салон</title>
+<meta name="description" content="NAILBLAACK — маникюрный салон премиум-класса. Онлайн-запись к мастеру за минуту.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💅</text></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header" id="top">
+  <div class="container header-inner">
+    <a href="#top" class="logo">NAIL<span>BLAACK</span></a>
+    <nav class="nav" id="nav">
+      <a href="#services">Услуги</a>
+      <a href="#masters">Мастера</a>
+      <a href="#gallery">Работы</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <button class="btn btn-primary" id="openBotBtn">Записаться</button>
+    <button class="burger" id="burger" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-glow"></div>
+    <div class="container hero-inner">
+      <p class="eyebrow">Салон маникюра премиум-класса</p>
+      <h1>NAIL<span>BLAACK</span></h1>
+      <p class="hero-sub">Идеальный маникюр в глубоком чёрно-синем стиле. Запишитесь к своему мастеру онлайн — наш бот подберёт свободное время за пару кликов.</p>
+      <div class="hero-actions">
+        <button class="btn btn-primary btn-lg" id="heroBookBtn">Записаться онлайн</button>
+        <a href="#masters" class="btn btn-ghost btn-lg">Наши мастера</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>7&nbsp;лет</strong><span>на рынке</span></div>
+        <div><strong>4</strong><span>мастера</span></div>
+        <div><strong>4000+</strong><span>довольных клиентов</span></div>
+        <div><strong>4.9★</strong><span>средний рейтинг</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section">
+    <div class="container">
+      <h2 class="section-title">Услуги</h2>
+      <p class="section-sub">Выберите услугу — бот учтёт её при подборе мастера и времени записи</p>
+      <div class="grid services-grid">
+        <div class="card service-card">
+          <div class="service-icon">💅</div>
+          <h3>Маникюр классический</h3>
+          <p>Обработка кутикулы, придание формы, укрепление ногтя</p>
+          <span class="price">от 1500 ₽</span>
+        </div>
+        <div class="card service-card">
+          <div class="service-icon">✨</div>
+          <h3>Гель-лак покрытие</h3>
+          <p>Стойкое покрытие до 3 недель, широкая палитра оттенков</p>
+          <span class="price">от 2200 ₽</span>
+        </div>
+        <div class="card service-card">
+          <div class="service-icon">🖤</div>
+          <h3>Наращивание ногтей</h3>
+          <p>Гель или акригель, любая форма и длина</p>
+          <span class="price">от 3200 ₽</span>
+        </div>
+        <div class="card service-card">
+          <div class="service-icon">🎨</div>
+          <h3>Дизайн ногтей</h3>
+          <p>Втирка, стразы, роспись, френч, омбре</p>
+          <span class="price">от 500 ₽</span>
+        </div>
+        <div class="card service-card">
+          <div class="service-icon">🦶</div>
+          <h3>Педикюр</h3>
+          <p>Аппаратный педикюр с покрытием на выбор</p>
+          <span class="price">от 2500 ₽</span>
+        </div>
+        <div class="card service-card">
+          <div class="service-icon">🧴</div>
+          <h3>SPA-уход</h3>
+          <p>Парафинотерапия, массаж рук, увлажняющие маски</p>
+          <span class="price">от 1800 ₽</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="masters" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">Наши мастера</h2>
+      <p class="section-sub">Бот покажет реальную занятость каждого мастера и предложит свободные окна</p>
+      <div class="grid masters-grid" id="mastersGrid"></div>
+    </div>
+  </section>
+
+  <section id="gallery" class="section">
+    <div class="container">
+      <h2 class="section-title">Наши работы</h2>
+      <p class="section-sub">Немного вдохновения перед записью</p>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </div>
+  </section>
+
+  <section id="reviews" class="section section-alt">
+    <div class="container">
+      <h2 class="section-title">Отзывы</h2>
+      <div class="grid reviews-grid">
+        <div class="card review-card">
+          <div class="stars">★★★★★</div>
+          <p>«Записывалась через бота на сайте — очень удобно, сразу видно свободное время у мастера. Маникюр держится уже 3 недели!»</p>
+          <span class="review-author">— Дарья К.</span>
+        </div>
+        <div class="card review-card">
+          <div class="stars">★★★★★</div>
+          <p>«Атмосфера огонь, чёрно-синий интерьер прямо в стиле. Мастер Виктория — золотые руки.»</p>
+          <span class="review-author">— Алина М.</span>
+        </div>
+        <div class="card review-card">
+          <div class="stars">★★★★★</div>
+          <p>«Бот напомнил о записи за день, ничего не забыла. Буду записываться только сюда.»</p>
+          <span class="review-author">— Софья В.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts" class="section">
+    <div class="container contacts-inner">
+      <div>
+        <h2 class="section-title" style="text-align:left">Контакты</h2>
+        <ul class="contacts-list">
+          <li><strong>Адрес:</strong> г. Москва, ул. Тверская, д. 12</li>
+          <li><strong>Телефон:</strong> <a href="tel:+79990001122">+7 (999) 000-11-22</a></li>
+          <li><strong>Режим работы:</strong> ежедневно, 10:00–21:00</li>
+          <li><strong>Instagram / Telegram:</strong> @nailblaack</li>
+        </ul>
+        <button class="btn btn-primary" id="contactsBookBtn">Записаться через бота</button>
+      </div>
+      <div class="map-placeholder">
+        <div class="map-glow"></div>
+        <span>📍 NAILBLAACK<br>ул. Тверская, 12</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <span>© <span id="year"></span> NAILBLAACK. Все права защищены.</span>
+    <a href="admin.html" class="admin-link">Панель мастера</a>
+  </div>
+</footer>
+
+<!-- Booking bot launcher -->
+<button class="bot-fab" id="botFab" aria-label="Открыть бота записи">
+  <span class="bot-fab-icon">💬</span>
+</button>
+
+<!-- Booking bot widget -->
+<div class="bot-widget" id="botWidget" hidden>
+  <div class="bot-header">
+    <div class="bot-header-info">
+      <span class="bot-avatar">💅</span>
+      <div>
+        <strong>NAILBOT</strong>
+        <small>бот записи NAILBLAACK</small>
+      </div>
+    </div>
+    <button class="bot-close" id="botClose" aria-label="Закрыть">✕</button>
+  </div>
+  <div class="bot-messages" id="botMessages"></div>
+  <div class="bot-options" id="botOptions"></div>
+  <form class="bot-input-row" id="botInputForm" hidden>
+    <input type="text" id="botInput" placeholder="Введите сообщение..." autocomplete="off">
+    <button type="submit" class="btn btn-primary">➤</button>
+  </form>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script src="js/booking-bot.js"></script>
+</body>
+</html>
