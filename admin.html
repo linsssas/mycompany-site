@@ -18,7 +18,17 @@
   </div>
 </header>
 
-<main class="section admin-main">
+<div class="admin-login" id="adminLogin">
+  <form class="admin-login-card" id="adminLoginForm">
+    <h2>Панель мастера</h2>
+    <p>Введите пароль для доступа</p>
+    <input type="password" id="adminPasswordInput" placeholder="Пароль" autocomplete="current-password">
+    <button type="submit" class="btn btn-primary">Войти</button>
+    <p class="admin-login-error" id="adminLoginError" hidden>Неверный пароль</p>
+  </form>
+</div>
+
+<main class="section admin-main" id="adminMain" hidden>
   <div class="container">
     <h1 class="section-title" style="text-align:left">Панель записей</h1>
     <p class="section-sub" style="margin:0 0 24px;text-align:left">
@@ -64,6 +74,7 @@
 </main>
 
 <script src="js/data.js"></script>
+<script src="js/admin-auth.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>
