@@ -54,7 +54,7 @@ function formatBookingMessage(b) {
   return (
     `💅 <b>Новая запись NAILBLAACK</b>\n` +
     `Мастер: ${escapeHtml(b.masterName)}\n` +
-    `Услуга: ${escapeHtml(b.serviceName)} (${escapeHtml(b.price)} ₽)\n` +
+    `Услуга: ${escapeHtml(b.serviceName)} (${escapeHtml(b.price)} ₸)\n` +
     `Дата: ${escapeHtml(b.date)} в ${escapeHtml(b.time)}\n` +
     `Клиент: ${escapeHtml(b.name)}\n` +
     `Телефон: ${escapeHtml(b.phone)}`

@@ -40,14 +40,44 @@ const NB_MASTERS = [
   },
 ];
 
+const NB_CURRENCY = '₸';
+
 const NB_SERVICES = [
-  { id: 'manicure', name: 'Маникюр классический', price: 1500, duration: 60 },
-  { id: 'gel', name: 'Гель-лак покрытие', price: 2200, duration: 90 },
-  { id: 'extension', name: 'Наращивание ногтей', price: 3200, duration: 120 },
-  { id: 'design', name: 'Дизайн ногтей', price: 500, duration: 30 },
-  { id: 'pedicure', name: 'Педикюр', price: 2500, duration: 90 },
-  { id: 'spa', name: 'SPA-уход', price: 1800, duration: 60 },
+  { id: 'manicure', name: 'Маникюр классический', price: 6000, duration: 60 },
+  { id: 'gel', name: 'Гель-лак покрытие', price: 9000, duration: 90 },
+  { id: 'extension', name: 'Наращивание ногтей', price: 14000, duration: 120 },
+  { id: 'design', name: 'Дизайн ногтей', price: 2500, duration: 30 },
+  { id: 'pedicure', name: 'Педикюр', price: 11000, duration: 90 },
+  { id: 'spa', name: 'SPA-уход', price: 8000, duration: 60 },
 ];
+
+// Цены, отредактированные в панели мастера, хранятся отдельно и накладываются
+// поверх значений выше при каждой загрузке страницы (см. NB_PricesStorage).
+const NB_PRICES_KEY = 'nailblaack_prices_v1';
+
+const NB_PricesStorage = {
+  getOverrides() {
+    try {
+      return JSON.parse(localStorage.getItem(NB_PRICES_KEY)) || {};
+    } catch (e) {
+      return {};
+    }
+  },
+  setPrice(serviceId, price) {
+    const overrides = this.getOverrides();
+    overrides[serviceId] = price;
+    localStorage.setItem(NB_PRICES_KEY, JSON.stringify(overrides));
+    const service = nbServiceById(serviceId);
+    if (service) service.price = price;
+  },
+};
+
+(function applyStoredPrices() {
+  const overrides = NB_PricesStorage.getOverrides();
+  NB_SERVICES.forEach(s => {
+    if (typeof overrides[s.id] === 'number') s.price = overrides[s.id];
+  });
+})();
 
 const NB_TIME_SLOTS = ['10:00', '11:30', '13:00', '14:30', '16:00', '17:30', '19:00', '20:00'];
 

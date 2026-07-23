@@ -48,6 +48,18 @@
       <p id="calendarEmpty" class="empty-state" hidden>На эту дату записей нет.</p>
     </div>
 
+    <div class="prices-panel">
+      <h2 class="section-title" style="text-align:left;font-size:22px;margin-bottom:6px;">Цены на услуги</h2>
+      <p class="section-sub" style="text-align:left;margin:0 0 16px;">
+        Изменения сохраняются в этом браузере и сразу отражаются на сайте и в боте записи.
+      </p>
+      <div class="prices-grid" id="pricesGrid"></div>
+      <div class="prices-actions">
+        <button class="btn btn-primary" id="savePricesBtn">Сохранить цены</button>
+        <span class="prices-saved-hint" id="pricesSavedHint" hidden>Сохранено ✓</span>
+      </div>
+    </div>
+
     <div class="admin-toolbar">
       <label>Мастер:
         <select id="filterMaster">
@@ -89,6 +101,7 @@
 <script src="js/data.js"></script>
 <script src="js/admin-auth.js"></script>
 <script src="js/admin-calendar.js"></script>
+<script src="js/admin-prices.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>

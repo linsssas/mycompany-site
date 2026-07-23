@@ -142,7 +142,7 @@
   }
 
   function showServicesInfo() {
-    const list = NB_SERVICES.map(s => `• ${s.name} — <strong>${s.price} ₽</strong> (${s.duration} мин)`).join('<br>');
+    const list = NB_SERVICES.map(s => `• ${s.name} — <strong>${s.price} ${NB_CURRENCY}</strong> (${s.duration} мин)`).join('<br>');
     addBot('Наши услуги:<br>' + list);
     setOptions([{ label: '📅 Записаться', action: () => chooseServiceStep() }, restartOption()]);
   }
@@ -152,7 +152,7 @@
     ctx.masterId = preselectedMasterId || null;
     addBot('Какая услуга вас интересует?');
     const options = NB_SERVICES.map(s => ({
-      label: `${s.name} — ${s.price} ₽`,
+      label: `${s.name} — ${s.price} ${NB_CURRENCY}`,
       action: () => chooseMasterStep(s.id),
     }));
     options.push(restartOption());
@@ -299,7 +299,7 @@
       `Проверьте данные записи:<br>` +
         `👤 Имя: <strong>${escapeHtml(ctx.name)}</strong><br>` +
         `📞 Телефон: <strong>${escapeHtml(ctx.phone)}</strong><br>` +
-        `💅 Услуга: <strong>${service.name}</strong> (${service.price} ₽)<br>` +
+        `💅 Услуга: <strong>${service.name}</strong> (${service.price} ${NB_CURRENCY})<br>` +
         `🙋 Мастер: <strong>${master.name}</strong><br>` +
         `📅 Дата: <strong>${formatDateLabel(ctx.date)}</strong><br>` +
         `🕐 Время: <strong>${ctx.time}</strong>`

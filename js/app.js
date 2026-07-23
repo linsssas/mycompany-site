@@ -2,6 +2,12 @@
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// Цены услуг (учитывают правки из панели мастера, см. js/data.js -> NB_PricesStorage)
+document.querySelectorAll('[data-service-price]').forEach(el => {
+  const service = nbServiceById(el.dataset.servicePrice);
+  if (service) el.textContent = `от ${service.price} ${NB_CURRENCY}`;
+});
+
 // Мастера
 const mastersGrid = document.getElementById('mastersGrid');
 NB_MASTERS.forEach(m => {
