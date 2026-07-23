@@ -70,6 +70,14 @@
     scrollDown();
   }
 
+  function addWidget(mountFn) {
+    const div = document.createElement('div');
+    div.className = 'bot-msg bot-msg-bot bot-msg-widget';
+    messagesEl.appendChild(div);
+    mountFn(div);
+    scrollDown();
+  }
+
   function scrollDown() {
     requestAnimationFrame(() => (messagesEl.scrollTop = messagesEl.scrollHeight));
   }
@@ -189,50 +197,42 @@
     setOptions(options);
   }
 
-  // Шаг 3: дата
+  // Шаг 3: дата — «цветущий календарь»
   function chooseDateStep(candidateMasterIds) {
     ctx.candidateMasterIds = candidateMasterIds;
-    const dates = getAvailableDates(candidateMasterIds, 7);
 
-    if (dates.length === 0) {
+    if (!hasAnyAvailableDate(candidateMasterIds)) {
       addBot('К сожалению, у выбранных мастеров нет свободных дат в ближайшее время.');
       setOptions([restartOption()]);
       return;
     }
 
     addBot('Выберите удобную дату:');
-    const options = dates.map(d => ({
-      label: d.label,
-      action: () => chooseTimeStep(d.iso),
-    }));
-    options.push(restartOption());
-    setOptions(options);
+    addWidget(container => {
+      window.NBPicker.mountDatePicker(container, {
+        candidateMasterIds,
+        onSelect: iso => chooseTimeStep(iso),
+      });
+    });
+    setOptions([restartOption()]);
   }
 
-  function getAvailableDates(candidateMasterIds, count) {
-    const masters = candidateMasterIds.map(nbMasterById);
-    const result = [];
+  function hasAnyAvailableDate(candidateMasterIds) {
     const today = new Date();
-    for (let i = 1; result.length < count && i <= 30; i++) {
+    for (let i = 1; i <= 30; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
-      const dow = d.getDay();
-      const worksThatDay = masters.some(m => m.workDays.includes(dow));
-      if (worksThatDay) {
-        result.push({
-          iso: isoDate(d),
-          label: `${WEEKDAYS[dow]}, ${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}`,
-        });
-      }
+      const iso = isoDate(d);
+      if (window.NBPicker.dayStatus(iso, candidateMasterIds) === 'available') return true;
     }
-    return result;
+    return false;
   }
 
   function isoDate(d) {
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   }
 
-  // Шаг 4: время
+  // Шаг 4: время — лента пилюль с солнцем/луной
   function chooseTimeStep(dateIso) {
     ctx.date = dateIso;
     const dow = new Date(dateIso + 'T00:00:00').getDay();
@@ -249,12 +249,14 @@
     }
 
     addBot('Выберите время:');
-    const options = freeSlots.map(time => ({
-      label: time,
-      action: () => assignMasterAndAskName(time),
-    }));
-    options.push(restartOption());
-    setOptions(options);
+    addWidget(container => {
+      window.NBPicker.mountTimePicker(container, {
+        dateIso,
+        candidateMasterIds: ctx.candidateMasterIds,
+        onSelect: time => assignMasterAndAskName(time),
+      });
+    });
+    setOptions([{ label: '← Выбрать другую дату', action: () => chooseDateStep(ctx.candidateMasterIds) }, restartOption()]);
   }
 
   function assignMasterAndAskName(time) {
