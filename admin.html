@@ -35,6 +35,19 @@
       Здесь бот сохраняет все записи, сделанные через чат на сайте. Данные хранятся локально в этом браузере.
     </p>
 
+    <div class="calendar-panel">
+      <div class="calendar-toolbar">
+        <button class="btn btn-outline btn-sm" id="calPrevDay" aria-label="Предыдущий день">←</button>
+        <input type="date" id="calDateInput">
+        <button class="btn btn-outline btn-sm" id="calNextDay" aria-label="Следующий день">→</button>
+        <button class="btn btn-outline btn-sm" id="calTodayBtn">Сегодня</button>
+      </div>
+      <div class="calendar-scroll">
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+      <p id="calendarEmpty" class="empty-state" hidden>На эту дату записей нет.</p>
+    </div>
+
     <div class="admin-toolbar">
       <label>Мастер:
         <select id="filterMaster">
@@ -75,6 +88,7 @@
 
 <script src="js/data.js"></script>
 <script src="js/admin-auth.js"></script>
+<script src="js/admin-calendar.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>

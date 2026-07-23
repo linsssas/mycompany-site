@@ -77,6 +77,8 @@ function render() {
 
     bookingsBody.appendChild(tr);
   });
+
+  if (window.nbRefreshCalendar) window.nbRefreshCalendar();
 }
 
 function statusLabel(status) {
