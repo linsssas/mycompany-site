@@ -310,7 +310,8 @@
 
   function finalizeBooking() {
     if (NB_Storage.isSlotTaken(ctx.masterId, ctx.date, ctx.time)) {
-      addBot('К сожалению, это время только что заняли другим клиентом. Выберите другое время.');
+      addBot('К сожалению, это время только что заняли другим клиентом. Выберите другое время.<br>Мы уже сообщили администратору — с вами свяжутся, чтобы подобрать удобное время.');
+      notifyTelegramConflict();
       chooseTimeStep(ctx.date);
       return;
     }
@@ -348,6 +349,7 @@
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        type: 'confirmed',
         masterName: master.name,
         serviceName: service.name,
         price: service.price,
@@ -355,6 +357,29 @@
         time: booking.time,
         name: booking.name,
         phone: booking.phone,
+      }),
+    }).catch(() => {});
+  }
+
+  // Клиент дошёл до подтверждения, но слот в последний момент заняли —
+  // шлём администратору контакты клиента, чтобы связаться с ним вручную
+  // (по телефону/WhatsApp) и предложить другое время.
+  function notifyTelegramConflict() {
+    if (!NB_NOTIFY_URL) return;
+    const master = nbMasterById(ctx.masterId);
+    const service = nbServiceById(ctx.serviceId);
+    fetch(NB_NOTIFY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'conflict',
+        masterName: master ? master.name : '',
+        serviceName: service ? service.name : '',
+        price: service ? service.price : '',
+        date: ctx.date,
+        time: ctx.time,
+        name: ctx.name,
+        phone: ctx.phone,
       }),
     }).catch(() => {});
   }

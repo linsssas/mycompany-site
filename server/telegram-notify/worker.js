@@ -41,6 +41,16 @@ export default {
 };
 
 function formatBookingMessage(b) {
+  if (b.type === 'conflict') {
+    return (
+      `⚠️ <b>Клиент не смог записаться — время занято</b>\n` +
+      `Хотел(а): ${escapeHtml(b.masterName)} — ${escapeHtml(b.serviceName)}\n` +
+      `Желаемое время: ${escapeHtml(b.date)} в ${escapeHtml(b.time)}\n` +
+      `Клиент: ${escapeHtml(b.name)}\n` +
+      `Телефон: ${escapeHtml(b.phone)}\n` +
+      `Свяжитесь с клиентом (звонок/WhatsApp), чтобы предложить другое время.`
+    );
+  }
   return (
     `💅 <b>Новая запись NAILBLAACK</b>\n` +
     `Мастер: ${escapeHtml(b.masterName)}\n` +
