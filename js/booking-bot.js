@@ -184,7 +184,7 @@
 
     addBot(`Услуга: <strong>${service.name}</strong>. Выберите мастера:`);
     const options = suitable.map(m => ({
-      label: `${m.name} (${m.role}) ★${m.rating}`,
+      label: `${m.name} (${m.role}) ★${m.rating} — ${nbEffectivePrice(m.id, service.id)} ${NB_CURRENCY}`,
       action: () => chooseDateStep([m.id]),
     }));
     if (suitable.length > 1) {
@@ -295,11 +295,12 @@
   function confirmStep() {
     const master = nbMasterById(ctx.masterId);
     const service = nbServiceById(ctx.serviceId);
+    const price = nbEffectivePrice(ctx.masterId, ctx.serviceId);
     addBot(
       `Проверьте данные записи:<br>` +
         `👤 Имя: <strong>${escapeHtml(ctx.name)}</strong><br>` +
         `📞 Телефон: <strong>${escapeHtml(ctx.phone)}</strong><br>` +
-        `💅 Услуга: <strong>${service.name}</strong> (${service.price} ${NB_CURRENCY})<br>` +
+        `💅 Услуга: <strong>${service.name}</strong> (${price} ${NB_CURRENCY})<br>` +
         `🙋 Мастер: <strong>${master.name}</strong><br>` +
         `📅 Дата: <strong>${formatDateLabel(ctx.date)}</strong><br>` +
         `🕐 Время: <strong>${ctx.time}</strong>`
@@ -322,6 +323,7 @@
       id: nbGenId(),
       masterId: ctx.masterId,
       serviceId: ctx.serviceId,
+      price: nbEffectivePrice(ctx.masterId, ctx.serviceId),
       date: ctx.date,
       time: ctx.time,
       name: ctx.name,
@@ -354,7 +356,7 @@
         type: 'confirmed',
         masterName: master.name,
         serviceName: service.name,
-        price: service.price,
+        price: booking.price,
         date: booking.date,
         time: booking.time,
         name: booking.name,
@@ -377,7 +379,7 @@
         type: 'conflict',
         masterName: master ? master.name : '',
         serviceName: service ? service.name : '',
-        price: service ? service.price : '',
+        price: master && service ? nbEffectivePrice(master.id, service.id) : (service ? service.price : ''),
         date: ctx.date,
         time: ctx.time,
         name: ctx.name,

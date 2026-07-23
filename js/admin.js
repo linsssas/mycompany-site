@@ -41,11 +41,13 @@ function render() {
   bookings.forEach(b => {
     const master = nbMasterById(b.masterId);
     const service = nbServiceById(b.serviceId);
+    const price = typeof b.price === 'number' ? b.price : nbEffectivePrice(b.masterId, b.serviceId);
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${formatDate(b.date)} · ${b.time}</td>
       <td>${master ? master.name : '—'}</td>
       <td>${service ? service.name : '—'}</td>
+      <td>${price} ${NB_CURRENCY}</td>
       <td>${escapeHtml(b.name)}</td>
       <td>${escapeHtml(b.phone)}</td>
       <td><span class="status-pill status-${b.status}">${statusLabel(b.status)}</span></td>

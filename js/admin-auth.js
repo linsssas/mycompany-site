@@ -23,7 +23,7 @@
 
   form.addEventListener('submit', e => {
     e.preventDefault();
-    if (input.value === ADMIN_PASSWORD) {
+    if (input.value.trim() === ADMIN_PASSWORD) {
       grantAccess();
     } else {
       errorEl.hidden = false;

@@ -40,6 +40,38 @@ const NB_MASTERS = [
   },
 ];
 
+// Список мастеров, отредактированный во вкладке «Разработчик», хранится целиком
+// и подменяет собой список выше при загрузке страницы (см. NB_MastersStorage).
+const NB_MASTERS_KEY = 'nailblaack_masters_v1';
+
+const NB_MastersStorage = {
+  getAll() {
+    try {
+      const raw = localStorage.getItem(NB_MASTERS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  },
+  saveAll(masters) {
+    localStorage.setItem(NB_MASTERS_KEY, JSON.stringify(masters));
+    NB_MASTERS.length = 0;
+    NB_MASTERS.push(...masters);
+  },
+};
+
+(function applyStoredMasters() {
+  const stored = NB_MastersStorage.getAll();
+  if (stored) {
+    NB_MASTERS.length = 0;
+    NB_MASTERS.push(...stored);
+  }
+})();
+
+function nbGenMasterId() {
+  return 'm-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 6);
+}
+
 const NB_CURRENCY = '₸';
 
 const NB_SERVICES = [
@@ -78,6 +110,37 @@ const NB_PricesStorage = {
     if (typeof overrides[s.id] === 'number') s.price = overrides[s.id];
   });
 })();
+
+// Персональные цены мастера на конкретную услугу (переопределяют базовую цену
+// услуги для этого мастера). Ключ вида "masterId:serviceId" -> цена.
+const NB_MASTER_PRICES_KEY = 'nailblaack_master_prices_v1';
+
+const NB_MasterPricesStorage = {
+  getAll() {
+    try {
+      return JSON.parse(localStorage.getItem(NB_MASTER_PRICES_KEY)) || {};
+    } catch (e) {
+      return {};
+    }
+  },
+  saveAll(overrides) {
+    localStorage.setItem(NB_MASTER_PRICES_KEY, JSON.stringify(overrides));
+  },
+  getPrice(masterId, serviceId) {
+    const overrides = this.getAll();
+    const value = overrides[masterId + ':' + serviceId];
+    return typeof value === 'number' ? value : null;
+  },
+};
+
+// Итоговая цена услуги у конкретного мастера: его персональная цена,
+// если задана, иначе базовая цена услуги.
+function nbEffectivePrice(masterId, serviceId) {
+  const override = NB_MasterPricesStorage.getPrice(masterId, serviceId);
+  if (override != null) return override;
+  const service = nbServiceById(serviceId);
+  return service ? service.price : 0;
+}
 
 const NB_TIME_SLOTS = ['10:00', '11:30', '13:00', '14:30', '16:00', '17:30', '19:00', '20:00'];
 

@@ -30,78 +30,104 @@
 
 <main class="section admin-main" id="adminMain" hidden>
   <div class="container">
-    <h1 class="section-title" style="text-align:left">Панель записей</h1>
-    <p class="section-sub" style="margin:0 0 24px;text-align:left">
+    <h1 class="section-title" style="text-align:left">Панель мастера</h1>
+    <p class="section-sub" style="margin:0 0 20px;text-align:left">
       Здесь бот сохраняет все записи, сделанные через чат на сайте. Данные хранятся локально в этом браузере.
     </p>
 
-    <div class="calendar-panel">
-      <div class="calendar-toolbar">
-        <button class="btn btn-outline btn-sm" id="calPrevDay" aria-label="Предыдущий день">←</button>
-        <input type="date" id="calDateInput">
-        <button class="btn btn-outline btn-sm" id="calNextDay" aria-label="Следующий день">→</button>
-        <button class="btn btn-outline btn-sm" id="calTodayBtn">Сегодня</button>
-      </div>
-      <div class="calendar-scroll">
-        <div class="calendar-grid" id="calendarGrid"></div>
-      </div>
-      <p id="calendarEmpty" class="empty-state" hidden>На эту дату записей нет.</p>
+    <div class="admin-tabs">
+      <button class="admin-tab admin-tab-active" id="tabBtnBookings" type="button">📅 Записи</button>
+      <button class="admin-tab" id="tabBtnDeveloper" type="button">🛠 Разработчик</button>
     </div>
 
-    <div class="prices-panel">
-      <h2 class="section-title" style="text-align:left;font-size:22px;margin-bottom:6px;">Цены на услуги</h2>
-      <p class="section-sub" style="text-align:left;margin:0 0 16px;">
-        Изменения сохраняются в этом браузере и сразу отражаются на сайте и в боте записи.
-      </p>
-      <div class="prices-grid" id="pricesGrid"></div>
-      <div class="prices-actions">
-        <button class="btn btn-primary" id="savePricesBtn">Сохранить цены</button>
-        <span class="prices-saved-hint" id="pricesSavedHint" hidden>Сохранено ✓</span>
+    <div id="tabBookings">
+      <div class="calendar-panel">
+        <div class="calendar-toolbar">
+          <button class="btn btn-outline btn-sm" id="calPrevDay" aria-label="Предыдущий день">←</button>
+          <input type="date" id="calDateInput">
+          <button class="btn btn-outline btn-sm" id="calNextDay" aria-label="Следующий день">→</button>
+          <button class="btn btn-outline btn-sm" id="calTodayBtn">Сегодня</button>
+        </div>
+        <div class="calendar-scroll">
+          <div class="calendar-grid" id="calendarGrid"></div>
+        </div>
+        <p id="calendarEmpty" class="empty-state" hidden>На эту дату записей нет.</p>
+      </div>
+
+      <div class="admin-toolbar">
+        <label>Мастер:
+          <select id="filterMaster">
+            <option value="all">Все мастера</option>
+          </select>
+        </label>
+        <label>Статус:
+          <select id="filterStatus">
+            <option value="all">Все</option>
+            <option value="confirmed">Подтверждена</option>
+            <option value="cancelled">Отменена</option>
+          </select>
+        </label>
+        <button class="btn btn-outline" id="refreshBtn">Обновить</button>
+      </div>
+
+      <div id="mastersSummary" class="admin-summary"></div>
+
+      <div class="table-wrap">
+        <table class="admin-table" id="bookingsTable">
+          <thead>
+            <tr>
+              <th>Дата / время</th>
+              <th>Мастер</th>
+              <th>Услуга</th>
+              <th>Цена</th>
+              <th>Клиент</th>
+              <th>Телефон</th>
+              <th>Статус</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="bookingsBody"></tbody>
+        </table>
+        <p id="emptyState" class="empty-state" hidden>Пока нет ни одной записи.</p>
       </div>
     </div>
 
-    <div class="admin-toolbar">
-      <label>Мастер:
-        <select id="filterMaster">
-          <option value="all">Все мастера</option>
-        </select>
-      </label>
-      <label>Статус:
-        <select id="filterStatus">
-          <option value="all">Все</option>
-          <option value="confirmed">Подтверждена</option>
-          <option value="cancelled">Отменена</option>
-        </select>
-      </label>
-      <button class="btn btn-outline" id="refreshBtn">Обновить</button>
-    </div>
+    <div id="tabDeveloper" hidden>
+      <div class="prices-panel">
+        <h2 class="section-title" style="text-align:left;font-size:22px;margin-bottom:6px;">Цены на услуги</h2>
+        <p class="section-sub" style="text-align:left;margin:0 0 16px;">
+          Базовая цена каждой услуги. Изменения сразу отражаются на сайте и в боте записи.
+        </p>
+        <div class="prices-grid" id="pricesGrid"></div>
+        <div class="prices-actions">
+          <button class="btn btn-primary" id="savePricesBtn">Сохранить цены</button>
+          <span class="prices-saved-hint" id="pricesSavedHint" hidden>Сохранено ✓</span>
+        </div>
+      </div>
 
-    <div id="mastersSummary" class="admin-summary"></div>
-
-    <div class="table-wrap">
-      <table class="admin-table" id="bookingsTable">
-        <thead>
-          <tr>
-            <th>Дата / время</th>
-            <th>Мастер</th>
-            <th>Услуга</th>
-            <th>Клиент</th>
-            <th>Телефон</th>
-            <th>Статус</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="bookingsBody"></tbody>
-      </table>
-      <p id="emptyState" class="empty-state" hidden>Пока нет ни одной записи.</p>
+      <div class="masters-panel">
+        <h2 class="section-title" style="text-align:left;font-size:22px;margin-bottom:6px;">Мастера</h2>
+        <p class="section-sub" style="text-align:left;margin:0 0 16px;">
+          Добавляйте, редактируйте и удаляйте мастеров. У каждого мастера можно задать свою цену
+          на услугу — если оставить поле пустым, действует базовая цена услуги сверху.
+        </p>
+        <div id="mastersEditorList"></div>
+        <div class="masters-editor-actions">
+          <button class="btn btn-outline" id="addMasterBtn">+ Добавить мастера</button>
+          <button class="btn btn-primary" id="saveMastersBtn">Сохранить мастеров</button>
+          <span class="prices-saved-hint" id="mastersSavedHint" hidden>Сохранено, обновляю страницу…</span>
+        </div>
+      </div>
     </div>
   </div>
 </main>
 
 <script src="js/data.js"></script>
 <script src="js/admin-auth.js"></script>
+<script src="js/admin-tabs.js"></script>
 <script src="js/admin-calendar.js"></script>
 <script src="js/admin-prices.js"></script>
+<script src="js/admin-masters.js"></script>
 <script src="js/admin.js"></script>
 </body>
 </html>
