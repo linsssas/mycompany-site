@@ -191,42 +191,87 @@
     draw();
   }
 
+  function clockIconSvg() {
+    return (
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.5"/>' +
+      '<path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>'
+    );
+  }
+
+  function chevronIconSvg() {
+    return (
+      '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M5 8.5L12 15.5L19 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '</svg>'
+    );
+  }
+
+  // Выпадающий (аккордеон) список времени — вертикальный, без горизонтального скролла
   function mountTimePicker(container, { dateIso, candidateMasterIds, onSelect }) {
     const dow = new Date(dateIso + 'T00:00:00').getDay();
     const workingMasters = candidateMasterIds.map(nbMasterById).filter(m => m.workDays.includes(dow));
 
-    const wrap = document.createElement('div');
-    wrap.className = 'nb-time-wrap';
-    const strip = document.createElement('div');
-    strip.className = 'nb-time-strip';
+    const select = document.createElement('div');
+    select.className = 'nb-time-select';
+
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'nb-time-trigger';
+    trigger.innerHTML =
+      `<span class="nb-time-trigger-icon">${clockIconSvg()}</span>` +
+      `<span class="nb-time-trigger-label">Выберите время</span>` +
+      `<span class="nb-time-chevron">${chevronIconSvg()}</span>`;
+
+    const panel = document.createElement('div');
+    panel.className = 'nb-time-panel';
+    const panelInner = document.createElement('div');
+    panelInner.className = 'nb-time-panel-inner';
+
+    let chosen = false;
+
+    trigger.addEventListener('click', () => {
+      if (chosen) return;
+      select.classList.toggle('nb-time-select-open');
+      if (select.classList.contains('nb-time-select-open')) {
+        setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 200);
+      }
+    });
 
     NB_TIME_SLOTS.forEach(time => {
       const hh = Number(time.split(':')[0]);
       const isMorning = hh < 16;
       const free = workingMasters.some(m => !NB_Storage.isSlotTaken(m.id, dateIso, time));
 
-      const pill = document.createElement('button');
-      pill.type = 'button';
-      pill.className = 'nb-time-pill' + (free ? '' : ' nb-time-pill-taken');
-      pill.innerHTML =
+      const option = document.createElement('button');
+      option.type = 'button';
+      option.className = 'nb-time-option' + (free ? '' : ' nb-time-option-taken');
+      option.innerHTML =
         `<span class="nb-time-icon">${isMorning ? sunIconSvg() : moonIconSvg()}</span><span>${time}</span>`;
 
       if (!free) {
-        pill.disabled = true;
+        option.disabled = true;
       } else {
-        pill.addEventListener('click', () => {
-          strip.querySelectorAll('.nb-time-pill-selected').forEach(el => el.classList.remove('nb-time-pill-selected'));
-          pill.classList.add('nb-time-pill-selected');
-          pill.disabled = true;
-          setTimeout(() => onSelect(time), 320);
+        option.addEventListener('click', () => {
+          if (chosen) return;
+          chosen = true;
+          panelInner.querySelectorAll('.nb-time-option').forEach(el => (el.disabled = true));
+          option.classList.add('nb-time-option-selected');
+          trigger.querySelector('.nb-time-trigger-label').textContent = time;
+          trigger.classList.add('nb-time-trigger-chosen');
+          select.classList.remove('nb-time-select-open');
+          setTimeout(() => onSelect(time), 420);
         });
       }
-      strip.appendChild(pill);
+      panelInner.appendChild(option);
     });
 
-    wrap.appendChild(strip);
-    container.appendChild(wrap);
-    requestAnimationFrame(() => wrap.classList.add('nb-time-open'));
+    panel.appendChild(panelInner);
+    select.appendChild(trigger);
+    select.appendChild(panel);
+    container.appendChild(select);
+    requestAnimationFrame(() => select.classList.add('nb-time-select-in'));
   }
 
   window.NBPicker = { mountDatePicker, mountTimePicker, dayStatus, isoDate };
