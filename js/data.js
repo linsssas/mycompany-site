@@ -9,7 +9,7 @@ const NB_MASTERS = [
     specialties: ['manicure', 'gel', 'design'],
     rating: 4.9,
     initials: 'А',
-    workDays: [1, 2, 3, 4, 5], // Пн-Пт
+    workDays: [0, 1, 2, 3, 4, 5, 6], // Пн-Вс
   },
   {
     id: 'victoria',
@@ -18,7 +18,7 @@ const NB_MASTERS = [
     specialties: ['extension', 'design'],
     rating: 5.0,
     initials: 'В',
-    workDays: [2, 3, 4, 5, 6], // Вт-Сб
+    workDays: [0, 2, 3, 4, 5, 6], // Вт-Вс
   },
   {
     id: 'marina',
@@ -27,7 +27,7 @@ const NB_MASTERS = [
     specialties: ['pedicure', 'spa'],
     rating: 4.8,
     initials: 'М',
-    workDays: [1, 3, 4, 5, 6], // Пн, Ср-Сб
+    workDays: [0, 1, 3, 4, 5, 6], // Пн, Ср-Вс
   },
   {
     id: 'ksenia',
@@ -36,7 +36,7 @@ const NB_MASTERS = [
     specialties: ['manicure', 'gel', 'extension', 'pedicure'],
     rating: 4.9,
     initials: 'К',
-    workDays: [1, 2, 4, 5, 6], // Пн, Вт, Чт-Сб
+    workDays: [0, 1, 2, 4, 5, 6], // Пн, Вт, Чт-Вс
   },
 ];
 
