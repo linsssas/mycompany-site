@@ -1,0 +1,40 @@
+# GPU image for the real TRELLIS.2 pipeline.
+#
+# Note: `docker build` does not have GPU access even on a GPU host (that
+# needs `docker run --gpus all`), so this image only installs the base
+# toolchain at build time. The actual TRELLIS.2 clone + conda env + model
+# download (backend/scripts/setup_real_model.sh) runs once at container
+# *start*, via entrypoint.sh, and is cached in the /srv/backend/vendor and
+# /root/.cache/huggingface volumes so it isn't repeated on every restart.
+#
+# Build context must be the trellis-clone/ project root, e.g.:
+#   docker build -f backend/Dockerfile.gpu -t forge3d-backend-gpu .
+#   docker run --gpus all -p 8000:8000 \
+#     -v forge3d-vendor:/srv/backend/vendor \
+#     -v forge3d-hf-cache:/root/.cache/huggingface \
+#     forge3d-backend-gpu
+FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git wget curl bzip2 build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Miniconda
+RUN wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh \
+    && bash /tmp/miniconda.sh -b -p /opt/conda \
+    && rm /tmp/miniconda.sh
+ENV PATH="/opt/conda/bin:${PATH}"
+
+WORKDIR /srv
+
+COPY backend ./backend
+COPY frontend ./frontend
+RUN chmod +x ./backend/scripts/setup_real_model.sh ./backend/entrypoint.sh
+
+ENV FORGE3D_PIPELINE_MODE=real
+ENV FORGE3D_OUTPUT_DIR=/srv/backend/outputs
+
+EXPOSE 8000
+WORKDIR /srv/backend
+ENTRYPOINT ["./entrypoint.sh"]

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Forge3D — Image to 3D</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script type="module" src="https://unpkg.com/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">◆</span>
+      <span class="brand-name">Forge3D</span>
+    </div>
+    <div class="badge" id="pipeline-badge">проверка движка…</div>
+  </header>
+
+  <main class="layout">
+    <section class="panel controls">
+      <h1>Изображение → 3D-модель</h1>
+      <p class="subtitle">Загрузите изображение объекта и получите готовый 3D-ассет (GLB) с текстурой.</p>
+
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp" hidden />
+        <div id="dropzone-empty">
+          <span class="upload-icon">⤴</span>
+          <span>Перетащите изображение сюда или нажмите, чтобы выбрать файл</span>
+        </div>
+        <img id="preview-image" alt="предпросмотр" hidden />
+      </label>
+
+      <div class="field">
+        <label for="resolution">Разрешение</label>
+        <select id="resolution">
+          <option value="512" selected>512³ — быстрее</option>
+          <option value="1024">1024³ — баланс</option>
+          <option value="1536">1536³ — максимум деталей</option>
+        </select>
+      </div>
+
+      <div class="field seed-field">
+        <label for="seed">Seed</label>
+        <div class="seed-row">
+          <input type="number" id="seed" value="0" min="0" />
+          <button type="button" id="randomize-seed" title="Случайный seed">🎲</button>
+        </div>
+      </div>
+
+      <details class="advanced">
+        <summary>Дополнительные параметры</summary>
+        <div class="field">
+          <label for="steps">Шаги диффузии: <span id="steps-value">25</span></label>
+          <input type="range" id="steps" min="5" max="50" value="25" />
+        </div>
+        <div class="field">
+          <label for="guidance">Сила guidance: <span id="guidance-value">7.5</span></label>
+          <input type="range" id="guidance" min="1" max="15" step="0.5" value="7.5" />
+        </div>
+      </details>
+
+      <button type="button" id="generate-btn" class="primary-btn" disabled>Сгенерировать 3D</button>
+
+      <div id="status-line" class="status-line" hidden></div>
+    </section>
+
+    <section class="panel viewer">
+      <div id="viewer-empty" class="viewer-empty">
+        <span class="viewer-icon">◇</span>
+        <span>3D-модель появится здесь</span>
+      </div>
+      <model-viewer id="model-viewer" hidden camera-controls auto-rotate shadow-intensity="1"
+        exposure="1" environment-image="neutral" style="width:100%;height:100%;">
+      </model-viewer>
+      <a id="download-btn" class="primary-btn download-btn" hidden download>Скачать GLB</a>
+    </section>
+  </main>
+
+  <footer class="footnote">
+    Собственная реализация в духе Microsoft TRELLIS.2 (image-to-3D). Без GPU это демо работает в
+    <b>mock-режиме</b> и строит модель по загруженному изображению упрощённым процедурным пайплайном —
+    не настоящей диффузионной моделью. Подробности и как включить реальный пайплайн — в README проекта.
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
