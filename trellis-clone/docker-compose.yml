@@ -1,0 +1,38 @@
+services:
+  # CPU / mock-mode demo - works on any machine, no GPU required.
+  #   docker compose up backend
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - FORGE3D_PIPELINE_MODE=mock
+
+  # Real TRELLIS.2 pipeline - requires an NVIDIA GPU (>=24GB VRAM) and the
+  # NVIDIA Container Toolkit on the host.
+  #   docker compose --profile gpu up backend-gpu
+  backend-gpu:
+    profiles: ["gpu"]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.gpu
+    ports:
+      - "8000:8000"
+    environment:
+      - FORGE3D_PIPELINE_MODE=real
+    volumes:
+      - forge3d-vendor:/srv/backend/vendor
+      - forge3d-hf-cache:/root/.cache/huggingface
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+volumes:
+  forge3d-vendor:
+  forge3d-hf-cache:
