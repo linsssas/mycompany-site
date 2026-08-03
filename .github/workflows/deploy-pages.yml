@@ -34,6 +34,9 @@ jobs:
 
   deploy:
     needs: build
+    # Окружение github-pages разрешает деплой только из main;
+    # на остальных ветках workflow служит CI-проверкой сборки
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
