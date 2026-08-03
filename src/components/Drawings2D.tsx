@@ -113,18 +113,15 @@ function TopView() {
   );
 }
 
-const SPEC_ROLES: ElementRole[] = ["post", "beam", "purlin", "brace", "diagonal"];
-
 function SpecTable() {
   const geom = useProjectStore((s) => s.results.geom);
   const profiles = useProjectStore((s) => s.profiles);
 
   const rows = useMemo(
     () =>
-      SPEC_ROLES.map((role) => {
-        const section = resolveSection(profiles[role]);
-        const c = geom.counts[role];
-        return { role, section, count: c.count, unitLength: c.unitLength, totalLength: c.totalLength, mass: (c.totalLength / 1000) * section.mass };
+      geom.bomLines.map((line) => {
+        const section = resolveSection(profiles[line.role]);
+        return { ...line, section, mass: (line.totalLength / 1000) * section.mass };
       }),
     [geom, profiles]
   );
@@ -142,12 +139,12 @@ function SpecTable() {
         </tr>
       </thead>
       <tbody>
-        {rows.map((r) => (
-          <tr key={r.role} className="border-b border-zinc-100 dark:border-zinc-800/50">
+        {rows.map((r, i) => (
+          <tr key={`${r.role}-${r.length}-${i}`} className="border-b border-zinc-100 dark:border-zinc-800/50">
             <td className="py-1">{ROLE_LABELS[r.role]}</td>
             <td className="py-1">{r.section.name}</td>
             <td className="py-1 text-right font-mono">{r.count}</td>
-            <td className="py-1 text-right font-mono">{r.unitLength.toFixed(0)}</td>
+            <td className="py-1 text-right font-mono">{r.length.toFixed(0)}</td>
             <td className="py-1 text-right font-mono">{(r.totalLength / 1000).toFixed(1)}</td>
             <td className="py-1 text-right font-mono">{r.mass.toFixed(1)}</td>
           </tr>

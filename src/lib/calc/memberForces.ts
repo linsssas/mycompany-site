@@ -50,7 +50,7 @@ export function calcMemberForces(
   const beamSection = resolveSection(assignments.beam);
 
   // --- Прогон (типовой, наиболее нагруженный) ---
-  const purlinSpanM = geom.counts.purlin.unitLength > 0 ? geom.counts.purlin.unitLength / 1000 : frameSpacingM;
+  const purlinSpanM = g.purlinLength > 0 ? g.purlinLength / 1000 : frameSpacingM;
   const gPurlinSelf = purlinSection.mass * G_ACC; // кН/м, собственный вес
   const gPanelPerPurlin = geom.counts.purlin.totalLength > 0
     ? (selfWeight.panelsTotal * G_ACC) / (geom.counts.purlin.totalLength / 1000)
@@ -70,7 +70,7 @@ export function calcMemberForces(
   };
 
   // --- Балка (несущая, между стойками) ---
-  const beamSpanM = geom.counts.beam.unitLength > 0 ? geom.counts.beam.unitLength / 1000 : g.beamLength / 1000;
+  const beamSpanM = g.beamLength > 0 ? g.beamLength / 1000 : frameSpacingM;
   const gBeamSelf = beamSection.mass * G_ACC;
   const tributaryPerBeam = numFrames > 0 ? (selfWeight.steelTotal - selfWeight.steelByRole.beam - selfWeight.steelByRole.post + selfWeight.panelsTotal) * G_ACC / numFrames : 0;
   const gBeam = gBeamSelf + (beamSpanM > 0 ? tributaryPerBeam / beamSpanM : 0);
