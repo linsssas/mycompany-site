@@ -2,6 +2,7 @@
 
 import { useProjectStore } from "@/store/useProjectStore";
 import Card from "../Card";
+import LeadCTA from "../LeadCTA";
 import UtilizationBadge from "./UtilizationBadge";
 import { COMBO_LABELS, ComboKey } from "@/lib/calc/combinations";
 import { ElementRole, FoundationType } from "@/lib/calc/types";
@@ -49,6 +50,8 @@ export default function ResultsPanel() {
           </span>
         </div>
       </Card>
+
+      <LeadCTA />
 
       <Card title="6. Собственный вес конструкции">
         <table className="w-full text-sm">
