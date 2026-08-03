@@ -43,3 +43,13 @@ npm run lint
 
 Основной код расчетного ядра находится в `src/lib/calc/`, состояние проекта — в
 `src/store/useProjectStore.ts`, интерфейс — в `src/components/`.
+
+## Invomat — генератор инвойсов (`/invoice`)
+
+Отдельный продукт на этом же сайте: бесплатный генератор инвойсов RU/EN для
+фрилансеров, работающих с зарубежными заказчиками (мультивалютность,
+IBAN/SWIFT, налоги/скидки, PDF через печать браузера, данные — только в
+localStorage). Код: `src/app/invoice/`, `src/components/invoice/`,
+`src/lib/invoice/`. Pro-ключи: `node scripts/generate-license.mjs [N]`.
+Бизнес-документы (анализ, план, финмодель, маркетинг, действия владельца) —
+в `docs/business/`.
