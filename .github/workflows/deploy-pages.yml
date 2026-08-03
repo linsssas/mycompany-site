@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - claude/solar-station-calculator-5cp1kt
+      - claude/ai-revenue-system-xwlj14
   workflow_dispatch:
 
 permissions:
