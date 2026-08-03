@@ -15,6 +15,9 @@ export default function CableJournalPage() {
         <Link href="/" className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
           ← Все инструменты
         </Link>
+        <Link href="/tools/voltage-drop" className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">
+          Потеря напряжения →
+        </Link>
       </header>
       <main className="mx-auto max-w-7xl px-4 pb-10">
         <h1 className="mb-1 text-xl font-bold text-zinc-900 dark:text-zinc-50">
