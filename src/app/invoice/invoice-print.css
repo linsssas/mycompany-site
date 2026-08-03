@@ -1,0 +1,20 @@
+/* Печать: на бумагу/PDF выводится только сам инвойс */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #invoice-print,
+  #invoice-print * {
+    visibility: visible;
+  }
+  #invoice-print {
+    position: absolute;
+    inset: 0 auto auto 0;
+    width: 100%;
+    margin: 0;
+  }
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
+}
