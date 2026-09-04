@@ -25,6 +25,17 @@ export interface SnowLoadCase {
   asymmetricAlongTable: boolean;
 }
 
+/** Плотность гололёдных отложений, кг/м³ (ISO 12494 / СП 20.13330, разд. 12). */
+export const ICE_DENSITY = 900;
+
+/**
+ * Гололёдная нагрузка на плоскость панели: вес слоя льда толщиной b.
+ * g = ρ · b · g₀ — приводится к кПа на 1 м² поверхности.
+ */
+export function iceLoadKPa(thicknessMm: number, density = ICE_DENSITY): number {
+  return (density * (thicknessMm / 1000) * 9.80665) / 1000;
+}
+
 export interface SnowResult {
   /** Характеристическое значение на грунт с учётом поправок, кПа */
   sk: number;
@@ -40,6 +51,8 @@ export interface SnowResult {
   sSlope: number;
   /** Коэффициент перехода к расчётному значению (для СП 20 — γf) */
   gammaF: number;
+  /** Гололёдная нагрузка на плоскость панели, кПа (0 — не учитывается) */
+  iceKPa: number;
   formulas: FormulaLine[];
   cases: SnowLoadCase[];
   warnings: Warning[];
@@ -280,5 +293,34 @@ export function calcSnow(input: SnowInputs): SnowResult {
     });
   }
 
-  return { sk, skBase, mu1, Ce: climate.Ce, Ct: climate.Ct, s, sSlope, gammaF, formulas, cases, warnings };
+  // --- Гололёд (опционально) ---
+  const iceKPa = climate.iceEnabled ? iceLoadKPa(climate.iceThicknessMm) : 0;
+  if (iceKPa > 0) {
+    formulas.push({
+      symbol: "g_лёд",
+      formula: "g = ρ_льда · b · g₀",
+      substitution: `${ICE_DENSITY} кг/м³ · ${fmt(climate.iceThicknessMm)} мм · 9,81 м/с²`,
+      value: iceKPa,
+      unit: "кПа",
+      ref: "ISO 12494 / СП 20.13330.2016, разд. 12 (гололёдные нагрузки)",
+    });
+    cases.push({
+      key: "ICE",
+      label: `Гололёд (стенка льда ${fmt(climate.iceThicknessMm)} мм)`,
+      ref: "ISO 12494 / СП 20.13330.2016, разд. 12",
+      note: "Гололёд и снег рассматриваются как альтернативные воздействия, одновременно не суммируются.",
+      distribution: () => 1,
+      lengthFraction: 1,
+      asymmetricAlongTable: false,
+    });
+    warnings.push({
+      severity: "info",
+      scope: "Гололёд",
+      message: `Учтена гололёдная нагрузка ${fmt(
+        iceKPa
+      )} кПа на плоскость панели (слой льда ${fmt(climate.iceThicknessMm)} мм). Толщина стенки гололёда должна приниматься по району согласно карте гололёдных районов.`,
+    });
+  }
+
+  return { sk, skBase, mu1, Ce: climate.Ce, Ct: climate.Ct, s, sSlope, gammaF, iceKPa, formulas, cases, warnings };
 }

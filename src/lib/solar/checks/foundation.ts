@@ -5,6 +5,7 @@
 // Внутри метода Бромса удобнее работать в метрах и кН.
 
 import { GroundInput, MaterialInput, StatusColor, statusOf, Warning } from "../types";
+import { SOILS } from "../presets";
 import { CheckRow } from "./member";
 import { fmt } from "../units";
 
@@ -290,6 +291,27 @@ export function checkFoundation(input: FoundationInput): FoundationResult {
     });
   }
 
+  // Потребное заглубление по каждому типу грунта — для сравнительного графика
+  const soilChart = SOILS.map((soilRef) => ({
+    soil: soilRef.name,
+    requiredDepthMm: findRequiredDepth(
+      {
+        ...input,
+        ground: {
+          ...ground,
+          soilKey: soilRef.key,
+          phi: soilRef.phi,
+          c: soilRef.c,
+          gamma: soilRef.gamma,
+          R: soilRef.R,
+          nh: soilRef.nh,
+          ks: soilRef.ks,
+        },
+      },
+      D * 1000
+    ),
+  }));
+
   return {
     Hu: broms.Hu,
     lateralUtilization: lateralUtil,
@@ -302,7 +324,7 @@ export function checkFoundation(input: FoundationInput): FoundationResult {
     rows,
     warnings,
     depthChart,
-    soilChart: [],
+    soilChart,
     details,
   };
 }

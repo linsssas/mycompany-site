@@ -226,8 +226,13 @@ export function checkJoint(input: JointCheckInput): JointCheckResult {
     });
   }
 
-  const capacity = Math.min(r.FvRd, r.FbRd);
-  const requiredCount = capacity > 0 ? Math.ceil(Math.abs(input.shear) / capacity) : n;
+  // Потребное количество болтов определяется наиболее нагруженным видом усилия:
+  // сдвигом (срез либо смятие листа) или растяжением (болт либо продавливание).
+  const shearCapacity = Math.min(r.FvRd, r.FbRd);
+  const tensionCapacity = Math.min(r.FtRd, r.BpRd);
+  const byShear = shearCapacity > 0 ? Math.ceil(Math.abs(input.shear) / shearCapacity) : n;
+  const byTension = tensionCapacity > 0 ? Math.ceil(Math.abs(input.tension) / tensionCapacity) : n;
+  const requiredCount = Math.max(1, byShear, byTension);
 
   const rows: CheckRow[] = items.map((it) => ({
     id: `${joint.key}-${it.key}`,

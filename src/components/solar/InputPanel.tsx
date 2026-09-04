@@ -366,6 +366,24 @@ export default function InputPanel() {
           onChange={(blockage) => setClimate({ blockage })}
         />
         <CheckboxField
+          label="Учитывать гололёдную нагрузку"
+          hint="Вес слоя льда на поверхности панелей. Толщина стенки гололёда принимается по карте гололёдных районов."
+          checked={p.climate.iceEnabled}
+          onChange={(iceEnabled) => setClimate({ iceEnabled })}
+        />
+        {p.climate.iceEnabled ? (
+          <NumberField
+            label="Толщина стенки гололёда"
+            unit="мм"
+            value={p.climate.iceThicknessMm}
+            onChange={(iceThicknessMm) => setClimate({ iceThicknessMm })}
+            min={0}
+            max={40}
+            step={1}
+            slider
+          />
+        ) : null}
+        <CheckboxField
           label="Проверочный расчёт по ASCE 7-22, гл. 29.4.4 (GCrn)"
           hint="Альтернативная методика для наземных фотоэлектрических установок. Коэффициенты редактируются в data/solar/wind_coefficients.json."
           checked={p.climate.useAsce}

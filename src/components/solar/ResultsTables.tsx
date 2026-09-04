@@ -5,6 +5,7 @@ import { useSolarStore } from "@/store/useSolarStore";
 import { Card, Note, StatusBadge, Table, Td, Th } from "./ui/layout";
 import { fmt } from "@/lib/solar/units";
 import { statusOf } from "@/lib/solar/types";
+import { tighteningTorque } from "@/lib/solar/checks/bolts";
 
 export function WarningsPanel() {
   const results = useSolarStore((s) => s.results);
@@ -227,7 +228,17 @@ export function JointsTable() {
             <div key={j.key}>
               <div className="mb-1 text-xs font-semibold text-zinc-800 dark:text-zinc-200">
                 {j.label}
-                <span className="ml-2 font-normal text-zinc-500">определяет: {j.resistances.governing}</span>
+                <span className="ml-2 font-normal text-zinc-500">
+                  определяет: {j.resistances.governing}
+                  {" · "}болтов в узле: {j.providedCount}, требуется по расчёту: {j.requiredCount}
+                  {(() => {
+                    const joint = results.project.bolts.joints.find((x) => x.key === j.key);
+                    const t = joint ? tighteningTorque(joint.d, joint.grade) : null;
+                    return t !== null && joint
+                      ? ` · момент затяжки М${joint.d} кл. ${joint.grade}: ${t} Н·м (справочно, оцинковка)`
+                      : "";
+                  })()}
+                </span>
               </div>
               <Table>
                 <thead>

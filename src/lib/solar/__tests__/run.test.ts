@@ -4,7 +4,7 @@ import { runSolarCalculation, findLimit } from "../run";
 import { buildGeometry, thermalElongation, normalizePurlinPositions, resolveLink } from "../geometry";
 import { memberResistances, memberUtilizations, memberUtilizationsInto, MEMBER_CHECK_KEYS, MEMBER_CHECK_COUNT } from "../checks/member";
 import { sectionProperties } from "../sections";
-import { boltResistances } from "../checks/bolts";
+import { boltResistances, checkJoint } from "../checks/bolts";
 import { bromsLateralCapacity } from "../checks/foundation";
 
 function closeRel(actual: number, expected: number, rel = 1e-6) {
@@ -362,5 +362,19 @@ describe("Защита от нефизичных исходных данных",
     p.geometry.postSpacing = 0;
     const r = runSolarCalculation(p, { sweeps: false });
     expect(isFinite(r.maxUtilization)).toBe(true);
+  });
+});
+
+describe("Потребное количество болтов", () => {
+  it("определяется наибольшим из требований по сдвигу и по растяжению", () => {
+    const p = proflandPreset();
+    const joint = p.bolts.joints.find((j) => j.key === "panel_purlin")!;
+    const r = boltResistances(joint, p.material);
+    const onlyTension = checkJoint({ joint, shear: 0, tension: 5 * Math.min(r.FtRd, r.BpRd), material: p.material, combo: "—" });
+    expect(onlyTension.requiredCount).toBe(5);
+    const onlyShear = checkJoint({ joint, shear: 3 * Math.min(r.FvRd, r.FbRd), tension: 0, material: p.material, combo: "—" });
+    expect(onlyShear.requiredCount).toBe(3);
+    // Без усилий узел всё равно требует минимум один болт
+    expect(checkJoint({ joint, shear: 0, tension: 0, material: p.material, combo: "—" }).requiredCount).toBe(1);
   });
 });

@@ -104,6 +104,39 @@ export default function Charts() {
           marker={{ value: project.ground.embedDepth, label: "задано" }}
         />
       </div>
+      <Card title="Потребное заглубление в зависимости от типа грунта">
+        <p className="mb-2 text-[11px] text-zinc-500">
+          При текущих усилиях в основании. Остальные характеристики грунта подставляются из справочной таблицы.
+        </p>
+        <Table>
+          <thead>
+            <tr>
+              <Th>Тип грунта</Th>
+              <Th className="text-right">Потребное заглубление, мм</Th>
+              <Th className="text-right">Относительно заданного</Th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.foundationRear.soilChart.map((r) => {
+              const ratio = r.requiredDepthMm / Math.max(project.ground.embedDepth, 1);
+              return (
+                <tr key={r.soil}>
+                  <Td>{r.soil}</Td>
+                  <Td mono className="text-right">
+                    {fmt(r.requiredDepthMm)}
+                  </Td>
+                  <Td mono className="text-right">
+                    <span className={ratio > 1 ? "text-red-700 dark:text-red-400" : "text-emerald-700 dark:text-emerald-400"}>
+                      {fmt(ratio)}
+                    </span>
+                  </Td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </Card>
+
       <Note>
         Каждая точка графика — полный пересчёт конструкции с изменением одного параметра; остальные исходные данные
         остаются неизменными.

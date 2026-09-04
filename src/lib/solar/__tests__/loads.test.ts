@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { calcSnow, muMonopitch, muMonopitchSP20, snowReturnPeriodFactor } from "../snow";
+import { calcSnow, iceLoadKPa, muMonopitch, muMonopitchSP20, snowReturnPeriodFactor } from "../snow";
 import { calcWind, roughnessFactor, windProbabilityFactor, interpolateCanopyCoefficients } from "../wind";
 import { buildCombinations } from "../combinations";
 import { ClimateInput, DesignInput } from "../types";
@@ -272,5 +272,22 @@ describe("Сочетания нагрузок (EN 1990)", () => {
   it("все сочетания ссылаются только на существующие загружения", () => {
     const keys = new Set(cases.map((c) => c.key));
     for (const c of combos) for (const t of c.terms) expect(keys.has(t.caseKey)).toBe(true);
+  });
+});
+
+describe("Гололёдная нагрузка", () => {
+  it("вес слоя льда считается по плотности 900 кг/м³", () => {
+    // 10 мм льда: 900 · 0,010 · 9,81 = 88,3 Н/м² = 0,0883 кПа
+    closeRel(iceLoadKPa(10), (900 * 0.01 * 9.80665) / 1000, 1e-9);
+  });
+
+  it("схема гололёда добавляется только при включённой опции", () => {
+    const base = { alphaDeg: 20, skRegion: 1.5, regionAltitude: 350, altitudeFactorPer100m: 0.1, lowerEdgeHeight: 1500 };
+    const off = calcSnow({ ...base, climate });
+    const on = calcSnow({ ...base, climate: { ...climate, iceEnabled: true, iceThicknessMm: 10 } });
+    expect(off.cases.some((c) => c.key === "ICE")).toBe(false);
+    expect(off.iceKPa).toBe(0);
+    expect(on.cases.some((c) => c.key === "ICE")).toBe(true);
+    expect(on.iceKPa).toBeGreaterThan(0);
   });
 });

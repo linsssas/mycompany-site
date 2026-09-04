@@ -184,15 +184,18 @@ export function runSolarCalculation(project: SolarProject, options: RunOptions =
     ref: "Спецификация металла + паспортная масса панелей",
   });
 
-  // Снеговые схемы: нагрузка задана на горизонтальную проекцию, приводим к плоскости ската
+  // Снеговые схемы: нагрузка задана на горизонтальную проекцию, приводим к плоскости ската.
+  // Гололёд задан сразу на плоскость панели, поэтому переводится напрямую.
   const sSlopeNmm2 = kPaToNmm2(snow.s) * Math.cos(geom.alphaRad);
+  const iceNmm2 = kPaToNmm2(snow.iceKPa);
   for (const sc of snow.cases) {
+    const intensity = sc.key === "ICE" ? iceNmm2 : sSlopeNmm2;
     cases.push({
       key: sc.key,
       label: sc.label,
       kind: "snow",
       purlinLoads: geom.purlins.map((p, i) => ({
-        vertical: sSlopeNmm2 * sc.distribution(p.fraction) * trib[i],
+        vertical: intensity * sc.distribution(p.fraction) * trib[i],
         normal: 0,
       })),
       includeFrameSelfWeight: false,
