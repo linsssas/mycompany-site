@@ -1,0 +1,38 @@
+{
+  "_meta": {
+    "title": "Климатические характеристики по городам Казахстана",
+    "source": "СП РК EN 1991-1-3 / EN 1991-1-4 с национальными приложениями, НТП РК 01-01-3.1(4.1)-2017",
+    "verified": false,
+    "warning": "ЗНАЧЕНИЯ СПРАВОЧНЫЕ И ТРЕБУЮТ ПРОВЕРКИ по действующей редакции норм и картам районирования для конкретной площадки. Поля sk и vb редактируются пользователем вручную.",
+    "fields": {
+      "sk": "кПа — характеристическое значение снеговой нагрузки на грунт (период повторяемости 50 лет)",
+      "vb": "м/с — базовая скорость ветра (10-минутное осреднение, 10 м, местность II, период повторяемости 50 лет)",
+      "w0": "кПа — нормативное ветровое давление для ветки СП 20.13330",
+      "altitude": "м — характерная высота города над уровнем моря",
+      "frostDepth": "м — нормативная глубина промерзания (ориентировочно, для суглинков)"
+    }
+  },
+  "altitudeFactorPer100m": 0.1,
+  "regions": [
+    { "key": "astana", "city": "Астана", "region": "Акмолинская обл.", "sk": 1.5, "vb": 24, "w0": 0.38, "altitude": 350, "frostDepth": 2.0, "snowDistrict": "III", "windDistrict": "III" },
+    { "key": "almaty", "city": "Алматы", "region": "г. Алматы", "sk": 1.2, "vb": 22, "w0": 0.3, "altitude": 780, "frostDepth": 1.0, "snowDistrict": "II", "windDistrict": "II" },
+    { "key": "shymkent", "city": "Шымкент", "region": "Туркестанская обл.", "sk": 0.8, "vb": 24, "w0": 0.38, "altitude": 500, "frostDepth": 0.8, "snowDistrict": "I", "windDistrict": "III" },
+    { "key": "karaganda", "city": "Караганда", "region": "Карагандинская обл.", "sk": 1.5, "vb": 26, "w0": 0.48, "altitude": 550, "frostDepth": 2.0, "snowDistrict": "III", "windDistrict": "IV" },
+    { "key": "aktobe", "city": "Актобе", "region": "Актюбинская обл.", "sk": 1.5, "vb": 26, "w0": 0.48, "altitude": 220, "frostDepth": 1.8, "snowDistrict": "III", "windDistrict": "IV" },
+    { "key": "taraz", "city": "Тараз", "region": "Жамбылская обл.", "sk": 1.0, "vb": 24, "w0": 0.38, "altitude": 620, "frostDepth": 0.9, "snowDistrict": "II", "windDistrict": "III" },
+    { "key": "pavlodar", "city": "Павлодар", "region": "Павлодарская обл.", "sk": 1.2, "vb": 26, "w0": 0.48, "altitude": 120, "frostDepth": 2.2, "snowDistrict": "II", "windDistrict": "IV" },
+    { "key": "oskemen", "city": "Усть-Каменогорск", "region": "обл. Абай / ВКО", "sk": 1.8, "vb": 22, "w0": 0.3, "altitude": 280, "frostDepth": 2.0, "snowDistrict": "IV", "windDistrict": "II" },
+    { "key": "semey", "city": "Семей", "region": "обл. Абай", "sk": 1.5, "vb": 24, "w0": 0.38, "altitude": 200, "frostDepth": 2.2, "snowDistrict": "III", "windDistrict": "III" },
+    { "key": "atyrau", "city": "Атырау", "region": "Атырауская обл.", "sk": 1.0, "vb": 26, "w0": 0.48, "altitude": -20, "frostDepth": 1.3, "snowDistrict": "II", "windDistrict": "IV" },
+    { "key": "kostanay", "city": "Костанай", "region": "Костанайская обл.", "sk": 1.5, "vb": 24, "w0": 0.38, "altitude": 160, "frostDepth": 2.2, "snowDistrict": "III", "windDistrict": "III" },
+    { "key": "kyzylorda", "city": "Кызылорда", "region": "Кызылординская обл.", "sk": 0.8, "vb": 24, "w0": 0.38, "altitude": 130, "frostDepth": 1.2, "snowDistrict": "I", "windDistrict": "III" },
+    { "key": "oral", "city": "Уральск", "region": "Западно-Казахстанская обл.", "sk": 1.5, "vb": 24, "w0": 0.38, "altitude": 40, "frostDepth": 1.8, "snowDistrict": "III", "windDistrict": "III" },
+    { "key": "petropavl", "city": "Петропавловск", "region": "Северо-Казахстанская обл.", "sk": 1.8, "vb": 24, "w0": 0.38, "altitude": 130, "frostDepth": 2.4, "snowDistrict": "IV", "windDistrict": "III" },
+    { "key": "aktau", "city": "Актау", "region": "Мангистауская обл.", "sk": 0.8, "vb": 28, "w0": 0.6, "altitude": 20, "frostDepth": 0.8, "snowDistrict": "I", "windDistrict": "V" },
+    { "key": "turkestan", "city": "Туркестан", "region": "Туркестанская обл.", "sk": 0.8, "vb": 24, "w0": 0.38, "altitude": 250, "frostDepth": 0.9, "snowDistrict": "I", "windDistrict": "III" },
+    { "key": "taldykorgan", "city": "Талдыкорган", "region": "обл. Жетысу", "sk": 1.2, "vb": 24, "w0": 0.38, "altitude": 600, "frostDepth": 1.2, "snowDistrict": "II", "windDistrict": "III" },
+    { "key": "kokshetau", "city": "Кокшетау", "region": "Акмолинская обл.", "sk": 1.8, "vb": 24, "w0": 0.38, "altitude": 230, "frostDepth": 2.2, "snowDistrict": "IV", "windDistrict": "III" },
+    { "key": "zhezkazgan", "city": "Жезказган", "region": "обл. Улытау", "sk": 1.2, "vb": 26, "w0": 0.48, "altitude": 350, "frostDepth": 2.0, "snowDistrict": "II", "windDistrict": "IV" },
+    { "key": "custom", "city": "Ручной ввод", "region": "—", "sk": 1.5, "vb": 24, "w0": 0.38, "altitude": 350, "frostDepth": 2.0, "snowDistrict": "—", "windDistrict": "—" }
+  ]
+}
