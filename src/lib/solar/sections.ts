@@ -265,15 +265,13 @@ export function computeSectorialProps(
     omega.push({ w1, w2, seg });
   }
 
-  // Интегралы ∫ω dA, ∫ω·u dA, ∫ω·v dA (ω и координаты линейны вдоль отрезка)
-  let Iomega = 0;
+  // Интегралы ∫ω·u dA и ∫ω·v dA (ω и координаты линейны вдоль отрезка)
   let Iou = 0;
   let Iov = 0;
   for (const { w1, w2, seg } of omega) {
     const L = Math.hypot(seg.b.u - seg.a.u, seg.b.v - seg.a.v);
     const dA = L * seg.t;
     if (dA === 0) continue;
-    Iomega += dA * ((w1 + w2) / 2);
     Iou += (dA / 6) * (2 * w1 * seg.a.u + w1 * seg.b.u + w2 * seg.a.u + 2 * w2 * seg.b.u);
     Iov += (dA / 6) * (2 * w1 * seg.a.v + w1 * seg.b.v + w2 * seg.a.v + 2 * w2 * seg.b.v);
   }

@@ -50,7 +50,9 @@ export function sig(value: number, digits = 3): number {
  */
 export function fmt(value: number, digits = 3): string {
   if (!isFinite(value)) return "—";
-  const v = sig(value, digits);
+  // Величины от 1000 и выше (как правило, размеры в мм) округляются до целого, а не
+  // до 3 значащих цифр: иначе длина 29 984 мм превратилась бы в 30 000 мм.
+  const v = Math.abs(value) >= 1000 ? Math.round(value) : sig(value, digits);
   const abs = Math.abs(v);
   const decimals = abs >= 100 ? 0 : abs >= 10 ? 1 : abs >= 1 ? 2 : abs >= 0.01 ? 3 : 4;
   const fixed = v.toFixed(decimals);

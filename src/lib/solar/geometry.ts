@@ -85,21 +85,28 @@ export interface DerivedGeometry {
   warnings: Warning[];
 }
 
+/** Физически допустимый диапазон угла наклона, ° (за его пределами схема вырождается). */
+export const TILT_MIN = -5;
+export const TILT_MAX = 85;
+
 /** Разрешение связки «угол ↔ высоты стоек ↔ разнос». */
 export function resolveLink(g: GeometryInput): { alphaDeg: number; postSpacing: number; rearTopHeight: number; frontTopHeight: number } {
   const { linkMode } = g;
+  // Угол ограничивается физически осмысленным диапазоном: при вводе, например, 450°
+  // расчётная схема вырождается и даёт бессмысленные усилия.
+  const tiltDeg = Math.max(TILT_MIN, Math.min(TILT_MAX, g.tiltDeg));
   if (linkMode === "angle") {
     const alpha = rad2deg(Math.atan2(g.rearTopHeight - g.frontTopHeight, g.postSpacing));
     return { alphaDeg: alpha, postSpacing: g.postSpacing, rearTopHeight: g.rearTopHeight, frontTopHeight: g.frontTopHeight };
   }
   if (linkMode === "heights") {
-    const rear = g.frontTopHeight + g.postSpacing * Math.tan(deg2rad(g.tiltDeg));
-    return { alphaDeg: g.tiltDeg, postSpacing: g.postSpacing, rearTopHeight: rear, frontTopHeight: g.frontTopHeight };
+    const rear = g.frontTopHeight + g.postSpacing * Math.tan(deg2rad(tiltDeg));
+    return { alphaDeg: tiltDeg, postSpacing: g.postSpacing, rearTopHeight: rear, frontTopHeight: g.frontTopHeight };
   }
   // linkMode === "spacing"
-  const tan = Math.tan(deg2rad(g.tiltDeg));
+  const tan = Math.tan(deg2rad(tiltDeg));
   const spacing = tan > 1e-6 ? (g.rearTopHeight - g.frontTopHeight) / tan : g.postSpacing;
-  return { alphaDeg: g.tiltDeg, postSpacing: spacing, rearTopHeight: g.rearTopHeight, frontTopHeight: g.frontTopHeight };
+  return { alphaDeg: tiltDeg, postSpacing: spacing, rearTopHeight: g.rearTopHeight, frontTopHeight: g.frontTopHeight };
 }
 
 export function buildGeometry(g: GeometryInput, panel: PanelInput, embedDepth: number): DerivedGeometry {
@@ -121,9 +128,40 @@ export function buildGeometry(g: GeometryInput, panel: PanelInput, embedDepth: n
   if (alphaDeg <= 0.5) {
     warnings.push({ severity: "warning", scope: "Геометрия", message: "Угол наклона близок к нулю: сток воды и сползание снега не обеспечены." });
   }
+  if (g.linkMode !== "angle" && (g.tiltDeg > TILT_MAX || g.tiltDeg < TILT_MIN)) {
+    warnings.push({
+      severity: "error",
+      scope: "Геометрия",
+      message: `Задан угол наклона ${fmt(g.tiltDeg)}° — вне физически осмысленного диапазона ${TILT_MIN}…${TILT_MAX}°. В расчёте принято ${fmt(
+        alphaDeg
+      )}°; исправьте исходные данные.`,
+    });
+  }
+
+  if (rearTopHeight > 8000 || frontTopHeight > 8000) {
+    warnings.push({
+      severity: "error",
+      scope: "Геометрия",
+      message: `Высота стойки над землёй (${fmt(Math.max(rearTopHeight, frontTopHeight))} мм) выходит за пределы применимости расчётной схемы для стола СЭС. Проверьте угол наклона и разнос стоек.`,
+    });
+  }
+
+  // Защита от нефизичных линейных размеров: расчётная схема при них вырождается
+  const nonPositive: string[] = [];
+  if (g.framePitch <= 0) nonPositive.push("шаг рам");
+  if (postSpacing <= 0) nonPositive.push("разнос осей стоек");
+  if (panel.length <= 0 || panel.width <= 0) nonPositive.push("габарит панели");
+  if (g.frameCount < 2) nonPositive.push("количество рам (минимум 2)");
+  if (nonPositive.length > 0) {
+    warnings.push({
+      severity: "error",
+      scope: "Геометрия",
+      message: `Недопустимые исходные данные: ${nonPositive.join(", ")}. Расчёт выполнен по минимально допустимым значениям и не имеет физического смысла.`,
+    });
+  }
 
   // --- Балка ---
-  const slopeSpan = Math.hypot(postSpacing, rearTopHeight - frontTopHeight);
+  const slopeSpan = Math.max(1, Math.hypot(postSpacing, rearTopHeight - frontTopHeight));
   const rearTop: Vec2 = { x: 0, y: rearTopHeight };
   const frontTop: Vec2 = { x: postSpacing, y: frontTopHeight };
   // Единичный вектор ВВЕРХ по скату (от передней стойки к задней)

@@ -336,3 +336,31 @@ describe("Определение предельной нагрузки", () => {
     expect(findLimit([{ x: 0, y: 0.2 }, { x: 2, y: 0.4 }])).toBe(Infinity);
   });
 });
+
+describe("Защита от нефизичных исходных данных", () => {
+  it("абсурдный угол наклона ограничивается и помечается ошибкой", () => {
+    const p = proflandPreset();
+    p.geometry.linkMode = "heights";
+    p.geometry.tiltDeg = 450;
+    const r = runSolarCalculation(p, { sweeps: false });
+    expect(r.geom.alphaDeg).toBeLessThanOrEqual(85);
+    expect(isFinite(r.maxUtilization)).toBe(true);
+    expect(r.maxUtilization).toBeLessThan(1e6);
+    expect(r.warnings.some((w) => w.severity === "error" && w.scope === "Геометрия")).toBe(true);
+  });
+
+  it("нулевой шаг рам не приводит к вырождению расчёта", () => {
+    const p = proflandPreset();
+    p.geometry.framePitch = 0;
+    const r = runSolarCalculation(p, { sweeps: false });
+    expect(isFinite(r.maxUtilization)).toBe(true);
+    expect(r.warnings.some((w) => w.severity === "error")).toBe(true);
+  });
+
+  it("нулевой разнос стоек не ломает расчётную схему", () => {
+    const p = proflandPreset();
+    p.geometry.postSpacing = 0;
+    const r = runSolarCalculation(p, { sweeps: false });
+    expect(isFinite(r.maxUtilization)).toBe(true);
+  });
+});

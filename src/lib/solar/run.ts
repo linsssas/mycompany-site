@@ -1,7 +1,7 @@
 // Оркестратор расчёта: собирает геометрию, нагрузки, расчётные схемы, сочетания,
 // проверки элементов, узлов и фундамента.
 
-import { analyzeCase, analyzePurlinUnit, buildFrameModel, CaseResult, ElementaryCase } from "./analysis";
+import { analyzeCase, analyzePurlinUnit, buildFrameModel, CaseResult, ElementaryCase, FrameModelIndex } from "./analysis";
 import { buildBom, buildFastenerSummary, BomResult, FastenerRow } from "./bom";
 import { buildCombinations, Combination } from "./combinations";
 import { buildGeometry, DerivedGeometry, thermalElongation } from "./geometry";
@@ -64,6 +64,8 @@ export interface SolarResults {
   wind: WindResult;
   cases: CaseResult[];
   combos: Combination[];
+  /** Расчётная схема рамы (узлы, элементы, опоры) — для отрисовки эпюр */
+  frame: FrameModelIndex;
   /** Определяющие проверки (по одной строке на «элемент + вид проверки») */
   checks: CheckRow[];
   deflections: DeflectionRow[];
@@ -98,8 +100,6 @@ export interface SolarCharts {
   massVsAngle: { x: number; y: number }[];
   depthChart: { depthMm: number; lateralUtil: number; upliftSafety: number }[];
 }
-
-const G = 9.80665;
 
 interface RunOptions {
   /** Считать графики-развёртки (отключается при рекурсивных вызовах) */
@@ -165,7 +165,6 @@ export function runSolarCalculation(project: SolarProject, options: RunOptions =
   formulas.push(...wind.formulas);
 
   // ---------------- 5. Элементарные загружения ----------------
-  const nLines = geom.purlins.length;
   const trib = geom.purlins.map((p) => p.tributary);
 
   // Собственный вес (панели + прогоны), Н/мм² плоскости ската
@@ -943,6 +942,7 @@ export function runSolarCalculation(project: SolarProject, options: RunOptions =
     wind,
     cases: caseResults,
     combos,
+    frame: frameIndex,
     checks,
     deflections,
     joints,
@@ -1095,7 +1095,7 @@ function buildLoadRows(
     name: "Снег — суммарно на стол",
     value: fmt(snow.s * geom.projectedAreaM2),
     unit: "кН",
-    note: `${fmt((snow.s * geom.projectedAreaM2) / 9.80665 / 1000)} т на горизонтальную проекцию ${fmt(
+    note: `${fmt((snow.s * geom.projectedAreaM2 * 1000) / 9.80665 / 1000)} т на горизонтальную проекцию ${fmt(
       geom.projectedAreaM2
     )} м²`,
   });

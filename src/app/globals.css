@@ -1,5 +1,48 @@
 @import "tailwindcss";
 
+/*
+ * Тёмная тема: срабатывает либо по системной настройке, либо по атрибуту
+ * data-theme на контейнере (ручное переключение в инженерных инструментах).
+ * data-theme="light" принудительно отключает тёмную тему внутри контейнера.
+ */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:not([data-theme="light"], [data-theme="light"] *)) {
+      @slot;
+    }
+  }
+}
+
+/* Печать отчёта: скрываем интерфейс, разворачиваем таблицы */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .print-break {
+    break-before: page;
+  }
+  table {
+    break-inside: auto;
+  }
+  tr {
+    break-inside: avoid;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
