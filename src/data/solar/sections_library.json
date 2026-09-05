@@ -1,0 +1,28 @@
+{
+  "_meta": {
+    "title": "Библиотека холодногнутых профилей",
+    "source": "Сортамент по чертежу «Опора солнечных панелей 33°, 15 стоек, усиленный стол» (Profland) + типовые гнутые профили",
+    "note": "Габариты h × b × c заданы ПО НАРУЖНОМУ КОНТУРУ, мм. Библиотека редактируется и сохраняется в JSON.",
+    "naming": "ПС — С-образный профиль (швеллер с отгибами), ПСЮ — Σ-профиль, ПП — П-образный профиль без отгибов"
+  },
+  "sections": [
+    { "key": "ps_100x50x12_2", "name": "ПС 100×50×12, t=2,0", "shape": "C", "h": 100, "b": 50, "c": 12, "t": 2.0, "rFactor": 1.5, "coating": "Sz", "comment": "Стойка задняя по чертежу" },
+    { "key": "ps_120x60x13_2", "name": "ПС 120×60×13, t=2,0", "shape": "C", "h": 120, "b": 60, "c": 13, "t": 2.0, "rFactor": 1.5, "coating": "Sz", "comment": "Стойка передняя по чертежу" },
+    { "key": "ps_110x30x10_2", "name": "ПС 110×30×10, t=2,0", "shape": "C", "h": 110, "b": 30, "c": 10, "t": 2.0, "rFactor": 1.5, "coating": "Sz", "comment": "Балка (стропило) по чертежу" },
+    { "key": "pp_76x36x10_15", "name": "ПП 76×36×10, t=1,5", "shape": "C", "h": 76, "b": 36, "c": 10, "t": 1.5, "rFactor": 1.5, "coating": "Sz", "comment": "Подпорка балки (раскос) по чертежу" },
+    { "key": "psu_41x61_2", "name": "ПСЮ 41×61 (Σ), t=2,0", "shape": "SIGMA", "h": 61, "b": 41, "c": 12, "t": 2.0, "rFactor": 1.5, "webStiffenerDepth": 12, "coating": "Sz", "comment": "Прогон по чертежу" },
+    { "key": "pp_45x63_2", "name": "ПП 45×63, t=2,0", "shape": "C", "h": 63, "b": 45, "c": 0, "t": 2.0, "rFactor": 1.5, "coating": "Sz", "comment": "Бандаж стыка прогонов по чертежу" },
+    { "key": "pp_59x35x10_15", "name": "ПП 59×35×10, t=1,5", "shape": "C", "h": 59, "b": 35, "c": 10, "t": 1.5, "rFactor": 1.5, "coating": "Sz", "comment": "Связь ветровая по чертежу" },
+
+    { "key": "c_140x60x15_2", "name": "ПС 140×60×15, t=2,0", "shape": "C", "h": 140, "b": 60, "c": 15, "t": 2.0, "rFactor": 1.5, "coating": "Sz", "comment": "" },
+    { "key": "c_160x70x18_25", "name": "ПС 160×70×18, t=2,5", "shape": "C", "h": 160, "b": 70, "c": 18, "t": 2.5, "rFactor": 1.5, "coating": "Sz", "comment": "" },
+    { "key": "c_200x70x20_3", "name": "ПС 200×70×20, t=3,0", "shape": "C", "h": 200, "b": 70, "c": 20, "t": 3.0, "rFactor": 1.5, "coating": "HDZ", "comment": "" },
+    { "key": "z_150x50x15_2", "name": "Z 150×50×15, t=2,0", "shape": "Z", "h": 150, "b": 50, "c": 15, "t": 2.0, "rFactor": 1.5, "coating": "Sz", "comment": "" },
+    { "key": "sigma_80x50_2", "name": "Σ 80×50, t=2,0", "shape": "SIGMA", "h": 80, "b": 50, "c": 15, "t": 2.0, "rFactor": 1.5, "webStiffenerDepth": 15, "coating": "Sz", "comment": "" },
+    { "key": "rhs_60x40_2", "name": "Труба 60×40×2", "shape": "RHS", "h": 60, "b": 40, "c": 0, "t": 2.0, "rFactor": 1.5, "coating": "HDZ", "comment": "" },
+    { "key": "rhs_80x40_3", "name": "Труба 80×40×3", "shape": "RHS", "h": 80, "b": 40, "c": 0, "t": 3.0, "rFactor": 1.5, "coating": "HDZ", "comment": "" },
+    { "key": "rhs_100x50_3", "name": "Труба 100×50×3", "shape": "RHS", "h": 100, "b": 50, "c": 0, "t": 3.0, "rFactor": 1.5, "coating": "HDZ", "comment": "" },
+    { "key": "angle_50x50_4", "name": "Уголок 50×50×4", "shape": "ANGLE", "h": 50, "b": 50, "c": 0, "t": 4.0, "rFactor": 1.5, "coating": "HDZ", "comment": "" },
+    { "key": "angle_63x40_4", "name": "Уголок 63×40×4", "shape": "ANGLE", "h": 63, "b": 40, "c": 0, "t": 4.0, "rFactor": 1.5, "coating": "HDZ", "comment": "" }
+  ]
+}

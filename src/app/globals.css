@@ -1,8 +1,52 @@
 @import "tailwindcss";
 
+/*
+ * Тёмная тема: срабатывает либо по системной настройке, либо по атрибуту
+ * data-theme на контейнере (ручное переключение в инженерных инструментах).
+ * data-theme="light" принудительно отключает тёмную тему внутри контейнера.
+ */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:not([data-theme="light"], [data-theme="light"] *)) {
+      @slot;
+    }
+  }
+}
+
+/* Печать отчёта: скрываем интерфейс, разворачиваем таблицы */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .print-break {
+    break-before: page;
+  }
+  table {
+    break-inside: auto;
+  }
+  tr {
+    break-inside: avoid;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+}
+
+.print-only {
+  display: none;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --grid-line: rgba(0, 0, 0, 0.05);
 }
 
 @theme inline {
@@ -16,11 +60,20 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --grid-line: rgba(255, 255, 255, 0.06);
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Инженерная сетка на фоне блока — тонкая, декоративная, не мешает контенту. */
+.bg-blueprint-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
