@@ -11,13 +11,17 @@ export const metadata: Metadata = {
 export default function CableJournalPage() {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
-      <header className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
-        <Link href="/" className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
-          ← Все инструменты
-        </Link>
+      <header className="border-b border-zinc-200 dark:border-zinc-800">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
+          <Link href="/" className="font-mono text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-50">
+            ← Все инструменты
+          </Link>
+          <span className="font-mono text-[11px] text-zinc-400">ГОСТ 21.613</span>
+        </div>
       </header>
-      <main className="mx-auto max-w-7xl px-4 pb-10">
-        <h1 className="mb-1 text-xl font-bold text-zinc-900 dark:text-zinc-50">
+      <main className="mx-auto max-w-7xl px-4 py-8">
+        <p className="font-mono text-xs font-medium uppercase tracking-widest text-zinc-500">01 / Инструмент</p>
+        <h1 className="mb-1 mt-2 text-xl font-bold text-zinc-900 dark:text-zinc-50">
           Кабельный журнал онлайн
         </h1>
         <p className="mb-6 max-w-3xl text-sm text-zinc-500">

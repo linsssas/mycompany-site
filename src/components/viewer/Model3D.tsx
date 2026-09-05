@@ -93,7 +93,7 @@ export default function Model3D() {
   const camDist = Math.max(4, (totalLength * MM) * 0.9);
 
   return (
-    <div className="h-[520px] w-full overflow-hidden rounded-lg border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950">
+    <div className="h-[520px] w-full overflow-hidden rounded-none border border-zinc-200 bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-950">
       <Canvas shadows camera={{ position: [camDist, camDist * 0.7, camDist], fov: 45 }}>
         <ambientLight intensity={0.6} />
         <directionalLight position={[10, 15, 8]} intensity={1.1} castShadow />

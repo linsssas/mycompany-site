@@ -30,7 +30,7 @@ export default function PanelForm() {
           onChange={(v) => setPanel({ orientation: v as "portrait" | "landscape" })}
         />
       </div>
-      <div className="mt-4 grid grid-cols-1 gap-2 rounded-md bg-zinc-50 p-3 text-sm dark:bg-zinc-800/50 sm:grid-cols-3">
+      <div className="mt-4 grid grid-cols-1 gap-2 rounded-none bg-zinc-50 p-3 text-sm dark:bg-zinc-800/50 sm:grid-cols-3">
         <div>
           <div className="text-zinc-500">Общая площадь</div>
           <div className="font-mono font-semibold">{derived.totalAreaM2.toFixed(2)} м²</div>

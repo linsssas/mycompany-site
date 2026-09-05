@@ -82,7 +82,9 @@ export default function Diagrams() {
                 key={q}
                 onClick={() => setQuantity(q)}
                 className={`px-2 py-0.5 font-mono ${
-                  quantity === q ? "bg-blue-600 text-white" : "text-zinc-600 dark:text-zinc-300"
+                  quantity === q
+                    ? "bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+                    : "text-zinc-600 dark:text-zinc-300"
                 }`}
               >
                 {q === "V" ? "Q" : q}
@@ -182,7 +184,7 @@ export default function Diagrams() {
         </svg>
         {hover ? (
           <div
-            className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full rounded bg-zinc-900 px-2 py-1 font-mono text-[11px] text-white shadow-lg"
+            className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full rounded bg-zinc-900 px-2 py-1 font-mono text-[11px] text-white"
             style={{ left: `${hover.x * 100}%`, top: `${hover.y * 100}%` }}
           >
             {hover.text}

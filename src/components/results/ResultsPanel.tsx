@@ -159,7 +159,7 @@ export default function ResultsPanel() {
                   <td className="py-1 text-right font-mono">{(el.strengthUtilization * 100).toFixed(0)}%</td>
                   <td className="py-1 text-right font-mono">{(el.bucklingUtilization * 100).toFixed(0)}%</td>
                   <td className="py-1 text-right font-mono">{el.slenderness.toFixed(0)}</td>
-                  <td className="py-1">{el.localOk ? "✅ ОК" : "⚠ превышение"}</td>
+                  <td className="py-1 font-mono text-xs">{el.localOk ? "ОК" : "⚠ превышение"}</td>
                   <td className="py-1 text-right">
                     <UtilizationBadge ratio={el.overallUtilization} color={el.color} />
                   </td>
@@ -169,8 +169,8 @@ export default function ResultsPanel() {
             </tbody>
           </table>
         </div>
-        <p className="mt-2 text-xs text-zinc-400">
-          🟢 менее 70% · 🟡 70–90% · 🔴 более 90%. Прогиб (SLS) проверяется дополнительно для балок и прогонов (см. коэффициент использования — максимум из прочности, устойчивости и прогиба).
+        <p className="mt-2 font-mono text-xs text-zinc-400">
+          &lt;70% в норме · 70–90% на грани · &gt;90% превышение. Прогиб (SLS) проверяется дополнительно для балок и прогонов (см. коэффициент использования — максимум из прочности, устойчивости и прогиба).
         </p>
       </Card>
 
@@ -211,7 +211,7 @@ export default function ResultsPanel() {
             { label: "Передняя стойка", a: r.anchorFront },
             { label: "Задняя стойка", a: r.anchorRear },
           ].map(({ label, a }) => (
-            <div key={label} className="rounded-md border border-zinc-200 p-3 text-sm dark:border-zinc-800">
+            <div key={label} className="rounded-none border border-zinc-200 p-3 text-sm dark:border-zinc-800">
               <div className="mb-2 flex items-center justify-between">
                 <h4 className="font-semibold">{label}</h4>
                 <UtilizationBadge ratio={a.combinedUtilization} color={a.combinedUtilization < 0.7 ? "green" : a.combinedUtilization <= 0.9 ? "yellow" : "red"} />
@@ -236,15 +236,15 @@ export default function ResultsPanel() {
             { label: "Фундамент передней стойки", f: r.foundationFront },
             { label: "Фундамент задней стойки", f: r.foundationRear },
           ].map(({ label, f }) => (
-            <div key={label} className="rounded-md border border-zinc-200 p-3 text-sm dark:border-zinc-800">
+            <div key={label} className="rounded-none border border-zinc-200 p-3 text-sm dark:border-zinc-800">
               <h4 className="mb-2 font-semibold">{label}</h4>
               <div className="space-y-1">
                 <Row label="Размер подошвы" value={`${f.widthM.toFixed(2)} × ${f.lengthM.toFixed(2)} м`} />
                 <Row label="Глубина заложения" value={`${f.depthM.toFixed(2)} м`} />
                 <Row label="Давление на грунт max/min" value={`${f.bearingPressureMax.toFixed(1)} / ${f.bearingPressureMin.toFixed(1)} кПа`} />
-                <Row label="Несущая способность" value={f.bearingOk ? "✅ ОК" : "🔴 недостаточна"} />
-                <Row label="Коэфф. устойчивости на опрокидывание" value={`${f.overturningFactor.toFixed(2)} ${f.overturningOk ? "✅" : "🔴"}`} />
-                <Row label="Коэфф. устойчивости на сдвиг" value={`${f.slidingFactor.toFixed(2)} ${f.slidingOk ? "✅" : "🔴"}`} />
+                <Row label="Несущая способность" value={f.bearingOk ? "ОК" : "✕ недостаточна"} />
+                <Row label="Коэфф. устойчивости на опрокидывание" value={`${f.overturningFactor.toFixed(2)} ${f.overturningOk ? "ОК" : "✕"}`} />
+                <Row label="Коэфф. устойчивости на сдвиг" value={`${f.slidingFactor.toFixed(2)} ${f.slidingOk ? "ОК" : "✕"}`} />
                 <Row label="Рекомендуемый тип" value={FOUNDATION_LABELS[f.recommendedType]} />
               </div>
               <p className="mt-2 text-xs text-zinc-400">{f.recommendedTypeNote}</p>
@@ -259,7 +259,7 @@ export default function ResultsPanel() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md bg-zinc-50 p-2 dark:bg-zinc-800/50">
+    <div className="rounded-none bg-zinc-50 p-2 dark:bg-zinc-800/50">
       <div className="text-xs text-zinc-500">{label}</div>
       <div className="font-mono font-semibold">{value}</div>
     </div>

@@ -24,7 +24,7 @@ export default function Charts() {
         <button
           onClick={request}
           disabled={pending}
-          className="rounded bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+          className="border border-zinc-900 bg-zinc-900 px-3 py-1.5 font-mono text-xs font-medium uppercase tracking-wide text-white hover:bg-zinc-700 disabled:opacity-60 dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
         >
           {pending ? "Считаю…" : "Построить графики"}
         </button>

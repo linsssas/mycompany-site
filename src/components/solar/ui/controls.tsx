@@ -14,12 +14,12 @@ export function Hint({ text }: { text: string }) {
         onClick={() => setOpen((v) => !v)}
         onMouseEnter={() => setOpen(true)}
         onMouseLeave={() => setOpen(false)}
-        className="ml-1 grid h-4 w-4 shrink-0 place-items-center rounded-full border border-zinc-300 text-[10px] leading-none text-zinc-500 hover:border-zinc-500 hover:text-zinc-800 dark:border-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-100"
+        className="ml-1 grid h-4 w-4 shrink-0 place-items-center rounded-none border border-zinc-300 text-[10px] leading-none text-zinc-500 hover:border-zinc-500 hover:text-zinc-800 dark:border-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-100"
       >
         ?
       </button>
       {open ? (
-        <span className="absolute left-5 top-0 z-30 w-64 rounded border border-zinc-300 bg-white p-2 text-xs font-normal leading-snug text-zinc-700 shadow-lg dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200">
+        <span className="absolute left-5 top-0 z-30 w-64 rounded border border-zinc-300 bg-white p-2 text-xs font-normal leading-snug text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200">
           {text}
         </span>
       ) : null}

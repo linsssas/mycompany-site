@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Toolbar from "@/components/Toolbar";
 import Tabs from "@/components/Tabs";
 import GeometryForm from "@/components/forms/GeometryForm";
@@ -19,6 +20,14 @@ export const metadata: Metadata = {
 export default function CalcPage() {
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950">
+      <div className="border-b border-zinc-200 dark:border-zinc-800">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-2">
+          <Link href="/" className="font-mono text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-50">
+            ← Все инструменты
+          </Link>
+          <span className="font-mono text-[11px] text-zinc-400">03 / Упрощённый расчёт</span>
+        </div>
+      </div>
       <Toolbar />
       <main className="mx-auto max-w-7xl px-4 py-6">
         <h1 className="mb-1 text-xl font-bold text-zinc-900 dark:text-zinc-50">

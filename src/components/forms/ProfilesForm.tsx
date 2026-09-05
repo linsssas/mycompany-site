@@ -26,7 +26,7 @@ function RoleRow({ role }: { role: ElementRole }) {
   const section = resolveSection(assignment);
 
   return (
-    <div className="rounded-md border border-zinc-200 p-3 dark:border-zinc-800">
+    <div className="rounded-none border border-zinc-200 p-3 dark:border-zinc-800">
       <div className="mb-2 flex flex-wrap items-end justify-between gap-2">
         <h4 className="text-sm font-semibold">{ROLE_LABELS[role]}</h4>
         <label className="flex items-center gap-2 text-xs text-zinc-500">

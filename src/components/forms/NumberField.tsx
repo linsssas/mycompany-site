@@ -18,7 +18,7 @@ export default function NumberField({ label, value, unit, step = 1, min, max, on
       </span>
       <input
         type="number"
-        className="rounded-md border border-zinc-300 bg-white px-2 py-1.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
+        className="rounded-none border border-zinc-300 bg-white px-2 py-1.5 text-zinc-900 focus:border-blue-500 focus:outline-none dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100"
         value={Number.isFinite(value) ? value : 0}
         step={step}
         min={min}

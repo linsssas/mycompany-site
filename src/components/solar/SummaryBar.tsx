@@ -26,7 +26,7 @@ export default function SummaryBar() {
     >
       <div className="flex items-center gap-2">
         <span
-          className={`inline-block h-3 w-3 rounded-full ${
+          className={`inline-block h-3 w-3 rounded-none ${
             results.passes ? "bg-emerald-500" : status === "yellow" ? "bg-amber-500" : "bg-red-500"
           }`}
         />

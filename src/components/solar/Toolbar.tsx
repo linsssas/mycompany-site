@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import Link from "next/link";
 import { useSolarStore } from "@/store/useSolarStore";
 import { PRESETS } from "@/lib/solar/presets";
 
@@ -19,7 +20,7 @@ function download(blob: Blob, filename: string) {
 }
 
 const btn =
-  "rounded border border-zinc-300 px-2.5 py-1 text-xs font-medium text-zinc-700 transition-colors hover:border-zinc-500 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800";
+  "border border-zinc-300 px-2.5 py-1 font-mono text-xs font-medium uppercase tracking-wide text-zinc-700 transition-colors hover:border-zinc-500 hover:bg-zinc-50 disabled:opacity-50 dark:border-zinc-700 dark:text-zinc-200 dark:hover:bg-zinc-800";
 
 export default function Toolbar() {
   const project = useSolarStore((s) => s.project);
@@ -60,10 +61,18 @@ export default function Toolbar() {
 
   return (
     <div className="no-print flex flex-wrap items-center gap-2 border-b border-zinc-200 bg-white px-3 py-2 dark:border-zinc-800 dark:bg-zinc-900">
+      <Link
+        href="/"
+        className="mr-1 font-mono text-xs font-semibold uppercase tracking-widest text-zinc-900 dark:text-zinc-50"
+      >
+        ← Все инструменты
+      </Link>
+      <span className="mx-1 h-4 w-px bg-zinc-300 dark:bg-zinc-700" />
+
       <select
         value={project.meta.presetKey}
         onChange={(e) => loadPreset(e.target.value)}
-        className="rounded border border-zinc-300 bg-white px-2 py-1 text-xs dark:border-zinc-700 dark:bg-zinc-900"
+        className="border border-zinc-300 bg-white px-2 py-1 text-xs dark:border-zinc-700 dark:bg-zinc-900"
         aria-label="Пресет"
       >
         {PRESETS.map((p) => (

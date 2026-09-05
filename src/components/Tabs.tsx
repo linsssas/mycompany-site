@@ -15,10 +15,10 @@ export default function Tabs({ tabs }: TabsProps) {
           <button
             key={t.key}
             onClick={() => setActive(t.key)}
-            className={`rounded-t-md px-3 py-2 text-sm font-medium transition-colors ${
+            className={`-mb-px border-b-2 px-3 py-2 font-mono text-xs font-medium uppercase tracking-wide transition-colors ${
               active === t.key
-                ? "border-b-2 border-blue-600 text-blue-600 dark:text-blue-400"
-                : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                ? "border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100"
+                : "border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
             }`}
           >
             {t.label}

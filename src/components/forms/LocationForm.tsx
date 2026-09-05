@@ -36,7 +36,7 @@ export default function LocationForm() {
         </div>
       )}
 
-      <div className="mt-4 grid grid-cols-2 gap-2 rounded-md bg-zinc-50 p-3 text-sm dark:bg-zinc-800/50 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-4 grid grid-cols-2 gap-2 rounded-none bg-zinc-50 p-3 text-sm dark:bg-zinc-800/50 sm:grid-cols-3 lg:grid-cols-5">
         <div>
           <div className="text-zinc-500">Снеговой район</div>
           <div className="font-mono font-semibold">{climate.snowRegion}</div>

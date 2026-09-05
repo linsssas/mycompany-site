@@ -33,7 +33,7 @@ export default function GeometryForm() {
       {warnings.length > 0 && (
         <div className="mt-3 space-y-1">
           {warnings.map((w, i) => (
-            <p key={i} className="rounded-md bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
+            <p key={i} className="rounded-none bg-amber-50 px-3 py-2 text-xs text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
               ⚠ {w}
             </p>
           ))}

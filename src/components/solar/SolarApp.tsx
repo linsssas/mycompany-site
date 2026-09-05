@@ -67,8 +67,10 @@ export default function SolarApp() {
           <button
             key={v}
             onClick={() => setMobileView(v)}
-            className={`rounded px-3 py-1 text-xs font-medium ${
-              mobileView === v ? "bg-blue-600 text-white" : "text-zinc-600 dark:text-zinc-300"
+            className={`border px-3 py-1 font-mono text-xs font-medium uppercase tracking-wide ${
+              mobileView === v
+                ? "border-zinc-900 bg-zinc-900 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900"
+                : "border-transparent text-zinc-600 dark:text-zinc-300"
             }`}
           >
             {v === "input" ? "Исходные данные" : "Результаты"}
@@ -93,10 +95,10 @@ export default function SolarApp() {
               <button
                 key={t.key}
                 onClick={() => setTab(t.key)}
-                className={`rounded-t px-3 py-1.5 text-xs font-medium transition-colors ${
+                className={`-mb-px border-b-2 px-3 py-1.5 font-mono text-xs font-medium uppercase tracking-wide transition-colors ${
                   tab === t.key
-                    ? "border-b-2 border-blue-600 text-blue-700 dark:border-blue-400 dark:text-blue-300"
-                    : "text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
+                    ? "border-zinc-900 text-zinc-900 dark:border-zinc-100 dark:text-zinc-100"
+                    : "border-transparent text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200"
                 }`}
               >
                 {t.label}
